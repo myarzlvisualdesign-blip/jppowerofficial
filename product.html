@@ -24,7 +24,7 @@
   </div>
 </section>
 
-<section style="padding: 40px 0 80px;">
+<section style="padding: 40px 0 80px;" data-product-filter>
   <div class="container">
     <div class="filter-bar reveal">
       <div class="filter-chips">
@@ -38,82 +38,17 @@
       </div>
       <div class="filter-sort">
         <span>SORT:</span>
-        <select>
-          <option>Featured</option>
-          <option>Price: Low to High</option>
-          <option>Price: High to Low</option>
-          <option>Newest</option>
-          <option>Best Selling</option>
+        <select data-sort>
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="newest">Newest</option>
+          <option value="best">Best Selling</option>
         </select>
       </div>
     </div>
 
-    <div class="yx-grid" data-filter-grid>
-      <article class="yx-card" data-cat="raket">
-        <div class="yx-img"><span class="yx-badge">NEW</span><img src="assets/unggulan1.jpg" alt="Ziven Power" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">CARBON WOVEN</span><h3>ZIVEN POWER</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(128)</span></div><p class="yx-price"><span class="old">Rp 799.900</span>Rp 599.900</p></div>
-      </article>
-      <article class="yx-card" data-cat="raket">
-        <div class="yx-img"><span class="yx-badge red">-30%</span><img src="assets/future66.png" alt="Future 66 III" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">ALL-ROUND</span><h3>FUTURE 66 III</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(94)</span></div><p class="yx-price"><span class="old">Rp 565.000</span>Rp 395.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="raket">
-        <div class="yx-img"><span class="yx-badge yellow">HOT</span><img src="assets/unggulan2.jpg" alt="Dragon Z" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">AGGRESSIVE</span><h3>DRAGON Z ATTACK</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(212)</span></div><p class="yx-price">Rp 789.900</p></div>
-      </article>
-      <article class="yx-card" data-cat="raket">
-        <div class="yx-img"><img src="assets/unggulan3.jpg" alt="Magnum X10" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">SMART TECH</span><h3>MAGNUM X10</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(76)</span></div><p class="yx-price">Rp 879.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="raket">
-        <div class="yx-img"><img src="assets/future66b.png" alt="Future 66 III B" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">ALL-ROUND</span><h3>FUTURE 66 III B</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(54)</span></div><p class="yx-price">Rp 425.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="shoes">
-        <div class="yx-img"><span class="yx-badge">NEW</span><img src="assets/feed1.jpg" alt="Sepatu Hybrid Pro" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">FOOTWEAR</span><h3>SEPATU HYBRID PRO</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(287)</span></div><p class="yx-price">Rp 559.900</p></div>
-      </article>
-      <article class="yx-card" data-cat="shoes">
-        <div class="yx-img"><img src="assets/sepatu-hybrid.png" alt="Hybrid Pro White" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">FOOTWEAR</span><h3>HYBRID PRO WHITE</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(143)</span></div><p class="yx-price">Rp 579.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="apparel">
-        <div class="yx-img"><span class="yx-badge yellow">SET</span><img src="assets/feed2.jpg" alt="Hybrid RN-8000" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">JERSEY SET</span><h3>HYBRID RN-8000</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(98)</span></div><p class="yx-price">Rp 279.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="apparel">
-        <div class="yx-img"><img src="assets/feed3.jpg" alt="Future Set" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">BUNDLE</span><h3>FUTURE BUNDLE SET</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(64)</span></div><p class="yx-price">Rp 645.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="grip">
-        <div class="yx-img"><img src="assets/unggulan5.jpg" alt="Grip Handuk" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">TOWEL GRIP</span><h3>GRIP HANDUK TG-500 MF</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(312)</span></div><p class="yx-price">Rp 7.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="grip">
-        <div class="yx-img"><span class="yx-badge">BEST SELLER</span><img src="assets/unggulan6.jpg" alt="Grip JP 100" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">OVERGRIP</span><h3>GRIP JP 100 OG</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(541)</span></div><p class="yx-price">Rp 13.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="grip">
-        <div class="yx-img"><span class="yx-badge red">NEW</span><img src="assets/unggulan4.jpg" alt="Grip Tulang" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">KEEL HAND GLUE</span><h3>GRIP TULANG PA-70</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(189)</span></div><p class="yx-price">Rp 15.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="string">
-        <div class="yx-img"><img src="assets/unggulan6.jpg" alt="Senar Virile" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">STRING</span><h3>SENAR VIRILE -66</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(167)</span></div><p class="yx-price">Rp 13.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="bag">
-        <div class="yx-img"><span class="yx-badge yellow">NEW</span><img src="assets/banner.jpg" alt="Bag Pro" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">RACKET BAG</span><h3>JP THERMAL BAG 9R</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(82)</span></div><p class="yx-price">Rp 389.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="bag">
-        <div class="yx-img"><img src="assets/banner.jpg" alt="Bag Tour" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">TOUR BAG</span><h3>JP TOUR BAG 12R</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(45)</span></div><p class="yx-price">Rp 559.000</p></div>
-      </article>
-      <article class="yx-card" data-cat="apparel">
-        <div class="yx-img"><img src="assets/feed2.jpg" alt="Skirt RN" /><a href="product-detail.html" class="yx-quick">QUICK VIEW</a></div>
-        <div class="yx-info"><span class="yx-cat">WOMEN</span><h3>SKIRT HYBRID RN-W</h3><div class="yx-rating"><span class="stars">★★★★★</span><span class="count">(73)</span></div><p class="yx-price">Rp 189.000</p></div>
-      </article>
-    </div>
+    <div class="yx-grid" data-render-grid="all"></div>
   </div>
 </section>
 
@@ -128,7 +63,11 @@
 
 <div id="siteFooter"></div>
 
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/ui.js"></script>
 <script src="js/partials.js"></script>
+<script src="js/render.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
