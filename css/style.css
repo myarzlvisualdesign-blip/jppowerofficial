@@ -175,79 +175,78 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ===== MEGA DROPDOWN ===== */
 .main-nav .has-dropdown { position: relative; }
-.main-nav .caret { font-size: 10px; margin-left: 4px; transition: transform .2s; }
+.main-nav .caret { font-size: 10px; margin-left: 4px; transition: transform .2s; display: inline-block; }
 .main-nav .has-dropdown:hover .caret { transform: rotate(180deg); }
 .mega-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
-  min-width: 200px;
+  min-width: 240px;
   background: #fff;
   border: 1px solid var(--grey-100);
-  border-radius: 8px;
-  box-shadow: 0 18px 40px rgba(0,0,0,.12);
-  padding: 8px 0;
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(0,0,0,.14);
+  padding: 10px 0;
   opacity: 0;
   visibility: hidden;
   transform: translateY(10px);
   transition: all .25s var(--ease);
   z-index: 100;
+  pointer-events: none;
 }
-.main-nav .has-dropdown:hover .mega-dropdown {
+.main-nav .has-dropdown:hover .mega-dropdown,
+.main-nav .has-dropdown:focus-within .mega-dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  pointer-events: auto;
 }
+/* Invisible bridge between trigger and dropdown to prevent hover gap */
+.main-nav .has-dropdown::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 240px;
+  height: 12px;
+  background: transparent;
+  pointer-events: none;
+}
+.main-nav .has-dropdown:hover::after { pointer-events: auto; }
 .mega-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 18px;
+  display: block;
+  padding: 9px 20px;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 600;
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   font-size: 14px;
   color: var(--ink);
   cursor: pointer;
-  transition: background .15s, color .15s;
-  position: relative;
+  transition: background .15s var(--ease), color .15s var(--ease), padding-left .15s var(--ease);
+  text-decoration: none;
+  white-space: nowrap;
 }
-.mega-item:hover { background: var(--grey-50); color: var(--green); }
-.mega-item .arrow { color: var(--grey-500); margin-left: 12px; font-size: 16px; }
-.mega-item.has-sub { padding-right: 18px; }
-.mega-sub {
-  position: absolute;
-  top: -8px;
-  left: 100%;
-  min-width: 240px;
-  background: #fff;
-  border: 1px solid var(--grey-100);
-  border-radius: 8px;
-  box-shadow: 0 18px 40px rgba(0,0,0,.12);
-  padding: 8px 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(10px);
-  transition: all .25s var(--ease);
-  z-index: 101;
+.mega-item::after { display: none !important; }
+.mega-item:hover {
+  background: var(--grey-50);
+  color: var(--green);
+  padding-left: 24px;
 }
-.mega-item.has-sub:hover .mega-sub {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
+.mega-all {
+  font-weight: 700;
+  color: var(--green);
 }
-.mega-sub a {
-  display: block;
-  padding: 10px 18px;
+.mega-divider {
+  margin: 6px 20px 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--grey-100);
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 600;
-  letter-spacing: .08em;
-  font-size: 14px;
-  color: var(--ink);
-  transition: background .15s, color .15s;
+  font-weight: 700;
+  letter-spacing: .18em;
+  font-size: 11px;
+  color: var(--grey-500);
 }
-.mega-sub a:hover { background: var(--grey-50); color: var(--green); }
-.mega-sub a::after { display: none; }
+.mega-divider span { display: inline-block; }
 
 .header-actions { display: flex; align-items: center; gap: 8px; }
 .icon-btn {
@@ -2032,13 +2031,14 @@ button { font-family: inherit; cursor: pointer; }
 /* ===== TOAST ===== */
 .toast-wrap {
   position: fixed;
-  top: 100px;
+  bottom: 28px;
   right: 24px;
   z-index: 120;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 10px;
   pointer-events: none;
+  max-width: calc(100vw - 48px);
 }
 .toast {
   background: #fff;
@@ -2048,13 +2048,13 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 14px;
   font-weight: 500;
   border-left: 4px solid var(--green);
-  transform: translateX(120%);
+  transform: translateY(20px);
   opacity: 0;
   transition: all .35s var(--ease);
   pointer-events: auto;
-  max-width: 320px;
+  max-width: 340px;
 }
-.toast.in { transform: translateX(0); opacity: 1; }
+.toast.in { transform: translateY(0); opacity: 1; }
 .toast-success { border-left-color: var(--green); color: var(--ink); }
 .toast-error   { border-left-color: var(--red); }
 .toast-info    { border-left-color: var(--grey-700); }
@@ -2188,6 +2188,7 @@ button { font-family: inherit; cursor: pointer; }
   .main-nav.open ul { flex-direction: column; gap: 14px; }
   .hamburger { display: block; }
   .main-nav .has-dropdown { position: static; }
+  .main-nav .has-dropdown::after { display: none; }
   .main-nav .mega-dropdown {
     position: static;
     opacity: 1;
@@ -2195,24 +2196,24 @@ button { font-family: inherit; cursor: pointer; }
     transform: none;
     box-shadow: none;
     border: 0;
-    padding: 6px 0 6px 16px;
+    padding: 4px 0 8px;
     background: transparent;
     min-width: 0;
+    pointer-events: auto;
   }
-  .main-nav .mega-sub {
-    position: static;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    box-shadow: none;
-    border: 0;
-    padding: 4px 0 4px 14px;
-    background: transparent;
-    min-width: 0;
+  .main-nav .caret { display: none; }
+  .main-nav .mega-item {
+    padding: 8px 0 8px 14px;
+    font-size: 13px;
+    color: var(--grey-700);
   }
-  .main-nav .caret, .main-nav .mega-item .arrow { display: none; }
-  .main-nav .mega-item { padding: 6px 0; font-size: 13px; }
-  .main-nav .mega-sub a { padding: 6px 0; font-size: 13px; color: var(--grey-700); }
+  .main-nav .mega-item:hover { padding-left: 18px; }
+  .main-nav .mega-all { padding-left: 0; }
+  .main-nav .mega-divider {
+    margin: 6px 0 2px;
+    padding-top: 6px;
+    font-size: 10px;
+  }
   .hero-title { font-size: 56px; }
   .promo-card { grid-template-columns: 1fr; text-align: center; padding: 28px 22px; }
   .promo-card-right { justify-content: center; }
@@ -2250,6 +2251,6 @@ button { font-family: inherit; cursor: pointer; }
   .cart-item-actions { grid-column: span 2; flex-direction: row; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px dashed var(--grey-200); }
   .checkout-form { padding: 22px; }
   .method-grid { grid-template-columns: 1fr; }
-  .toast-wrap { left: 16px; right: 16px; top: 90px; }
+  .toast-wrap { left: 16px; right: 16px; bottom: 90px; }
   .toast { max-width: none; }
 }
