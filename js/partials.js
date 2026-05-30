@@ -25,16 +25,20 @@
         <li class="has-dropdown">
           <a class="${isActive('product.html')}" href="product.html">PRODUK <span class="caret">▾</span></a>
           <div class="mega-dropdown">
-            <a href="product.html" class="mega-item mega-all">Semua</a>
-            <div class="mega-divider"><span>KOLEKSI</span></div>
-            <a href="product.html?cat=raket" class="mega-item">Raket Badminton</a>
-            <a href="product.html?cat=shoes" class="mega-item">Shoes Badminton</a>
-            <a href="product.html?cat=apparel" class="mega-item">Apparel</a>
-            <a href="product.html?cat=short" class="mega-item">Short</a>
-            <a href="product.html?cat=string" class="mega-item">String &amp; Grip</a>
-            <a href="product.html?cat=bag" class="mega-item">Bag</a>
-            <a href="product.html?cat=court" class="mega-item">Court Accessories</a>
-            <a href="product.html?cat=stringing" class="mega-item">Stringing Machine</a>
+            <a href="product.html" class="mega-item">Semua</a>
+            <div class="mega-item has-sub">
+              <a href="product.html" class="mega-item-link">Koleksi <span class="arrow">›</span></a>
+              <div class="mega-sub">
+                <a href="product.html?cat=raket">Raket Badminton</a>
+                <a href="product.html?cat=shoes">Shoes Badminton</a>
+                <a href="product.html?cat=apparel">Apparel</a>
+                <a href="product.html?cat=short">Short</a>
+                <a href="product.html?cat=string">String &amp; Grip</a>
+                <a href="product.html?cat=bag">Bag</a>
+                <a href="product.html?cat=court">Court Accessories</a>
+                <a href="product.html?cat=stringing">Stringing Machine</a>
+              </div>
+            </div>
           </div>
         </li>
         <li><a class="${isActive('jp-store.html')}" href="jp-store.html">JP STORE</a></li>
