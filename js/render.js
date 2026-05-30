@@ -21,13 +21,20 @@
     </article>
   `;
 
+  // Treat "string" filter as combined "String & Grip"
+  const matchCat = (p, cat) => {
+    if (cat === 'all') return true;
+    if (cat === 'string') return p.category === 'string' || p.category === 'grip';
+    return p.category === cat;
+  };
+
   // -------- RENDER GRIDS (any [data-render-grid]) --------
   document.querySelectorAll('[data-render-grid]').forEach(grid => {
     const mode = grid.dataset.renderGrid; // "all" or category
     const limit = +grid.dataset.limit || 0;
     let list = window.JP_PRODUCTS.slice();
     if (mode && mode !== 'all') {
-      list = list.filter(p => p.category === mode);
+      list = list.filter(p => matchCat(p, mode));
     }
     if (grid.dataset.featured === 'true') {
       list = list.filter(p => p.badge);
@@ -52,7 +59,7 @@
       const cat = activeChip ? activeChip.dataset.filter : 'all';
       const sort = sortSel ? sortSel.value : 'featured';
       let list = window.JP_PRODUCTS.slice();
-      if (cat !== 'all') list = list.filter(p => p.category === cat);
+      if (cat !== 'all') list = list.filter(p => matchCat(p, cat));
       if (initialQ) list = list.filter(p => p.name.toLowerCase().includes(initialQ));
       if (sort === 'price-asc') list.sort((a,b) => a.price - b.price);
       else if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
