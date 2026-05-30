@@ -222,6 +222,73 @@
     }
   }
 
+  // -------- ARTICLE PAGE --------
+  const articleRoot = document.querySelector('[data-article-content]');
+  if (articleRoot && window.JP_ARTICLES) {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || window.JP_ARTICLES[0].id;
+    const article = (window.JP_findArticle && window.JP_findArticle(id)) || window.JP_ARTICLES[0];
+
+    document.title = `${article.title} | JP-POWER Official`;
+    const crumb = document.querySelector('[data-crumb]');
+    if (crumb) crumb.textContent = article.title.length > 60 ? article.title.slice(0, 60) + '…' : article.title;
+
+    articleRoot.innerHTML = `
+      <div class="article-cover">
+        <span class="article-tag">${article.tag}</span>
+        <img src="${article.image}" alt="${article.title}" />
+      </div>
+      <div class="article-body">
+        <div class="article-meta">
+          <span class="article-date">${article.date.full}</span>
+          <span class="article-dot">•</span>
+          <span class="article-author">${article.author}</span>
+          <span class="article-dot">•</span>
+          <span class="article-read">${article.readTime}</span>
+        </div>
+        <h1 class="article-title">${article.title}</h1>
+        <p class="article-excerpt">${article.excerpt}</p>
+        <div class="article-content">${article.content}</div>
+        <div class="article-share">
+          <span>Bagikan:</span>
+          <a href="https://wa.me/?text=${encodeURIComponent(article.title + ' — ' + location.href)}" target="_blank" rel="noopener" aria-label="Share WhatsApp">WhatsApp</a>
+          <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(location.href)}&text=${encodeURIComponent(article.title)}" target="_blank" rel="noopener" aria-label="Share Twitter">Twitter</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}" target="_blank" rel="noopener" aria-label="Share Facebook">Facebook</a>
+        </div>
+      </div>
+    `;
+
+    const relatedEl = document.querySelector('[data-article-related]');
+    if (relatedEl) {
+      const related = window.JP_ARTICLES.filter(a => a.id !== article.id);
+      relatedEl.innerHTML = related.map(a => `
+        <a class="related-card" href="article.html?id=${a.id}">
+          <div class="related-img"><img src="${a.image}" alt="${a.title}" /></div>
+          <div class="related-meta">
+            <span class="related-tag">${a.tag}</span>
+            <h4>${a.title}</h4>
+          </div>
+        </a>
+      `).join('');
+    }
+  }
+
+  // -------- HOMEPAGE BLOG GRID (dynamic) --------
+  const blogGrid = document.querySelector('[data-render-blog]');
+  if (blogGrid && window.JP_ARTICLES) {
+    blogGrid.innerHTML = window.JP_ARTICLES.map((a, i) => `
+      <article class="blog-card reveal${i ? ` reveal-delay-${i}` : ''}">
+        <div class="blog-img"><div class="blog-date"><strong>${a.date.d}</strong><small>${a.date.m}</small></div><img src="${a.image}" alt="${a.title}" /></div>
+        <div class="blog-body">
+          <span class="blog-tag">${a.tag}</span>
+          <h3>${a.title}</h3>
+          <p>${a.excerpt}</p>
+          <a href="article.html?id=${a.id}" class="link-arrow">BACA SELENGKAPNYA <span>→</span></a>
+        </div>
+      </article>
+    `).join('');
+  }
+
   // -------- CART PAGE --------
   const cartRoot = document.querySelector('[data-cart-page]');
   if (cartRoot) {

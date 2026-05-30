@@ -425,6 +425,148 @@ window.JP_PRODUCTS = [
 window.JP_findProduct = (id) => window.JP_PRODUCTS.find(p => p.id === id);
 window.JP_formatRp = (n) => 'Rp ' + (n || 0).toLocaleString('id-ID');
 
+// ============ ARTICLES ============
+window.JP_ARTICLES = [
+  {
+    id: 'future-66-iii-launch',
+    tag: 'PRODUCT LAUNCH',
+    date: { d: '15', m: 'MAY', full: '15 Mei 2026' },
+    image: 'assets/feed3.jpg',
+    title: 'Future 66 III Resmi Dirilis: Generasi Terbaru Raket All-Round',
+    excerpt: 'Setelah dua tahun riset, JP-POWER memperkenalkan Future 66 III dengan teknologi frame baru.',
+    author: 'Tim Editorial JP-POWER',
+    readTime: '5 menit baca',
+    content: `
+<p class="lead">Setelah lebih dari dua tahun riset dan pengujian intensif di laboratorium R&amp;D Jepang, JP-POWER resmi memperkenalkan generasi ketiga dari seri legendaris <strong>Future 66 III</strong>. Raket all-round ini hadir membawa pembaruan signifikan pada frame, balance, dan teknologi tensioning untuk menjawab kebutuhan pemain modern.</p>
+
+<h2>Highlight Teknologi Baru</h2>
+<p>Future 66 III mengintegrasikan tiga inovasi utama yang membedakannya dari generasi sebelumnya:</p>
+<ul>
+  <li><strong>Carbon Woven Frame</strong> — Anyaman karbon high-modulus graphite memberikan power eksplosif tanpa mengorbankan durability. Bobot raket tetap di kisaran 4U (80±3g) untuk swing yang ringan.</li>
+  <li><strong>Aero-Force Frame</strong> — Profil aerodinamis 6.6mm di area atas frame memotong hambatan udara hingga 14%, sehingga smash terasa lebih cepat dan akurat.</li>
+  <li><strong>Anti-Twist Integration</strong> — Smart tech integration mengurangi getaran torsional pada saat mishit, sehingga shot tetap stabil meski tidak tepat di sweet spot.</li>
+</ul>
+
+<h2>Spesifikasi Lengkap</h2>
+<ul>
+  <li>Weight: 4U · 80 ± 3g</li>
+  <li>Balance: 295 ± 3 mm (medium)</li>
+  <li>Length: 675 mm</li>
+  <li>Flex: Medium (8.5)</li>
+  <li>Max Tension: <strong>32 LBS</strong></li>
+  <li>Frame: Carbon Woven · HM Graphite</li>
+  <li>Grip Size: G5</li>
+</ul>
+
+<h2>Cocok untuk Siapa?</h2>
+<p>Dengan kombinasi power dan control yang seimbang, Future 66 III sangat ideal untuk pemain intermediate hingga advanced yang masih mencari gaya bermain ideal. Atlet PBSI nasional yang sudah mencoba prototipe menggambarkannya sebagai "all-round sejati — bisa diandalkan untuk smash, drive, sekaligus net play."</p>
+
+<h2>Harga &amp; Ketersediaan</h2>
+<p>Future 66 III tersedia mulai 15 Mei 2026 di seluruh toko offline partner JP-POWER se-Indonesia dan via online store. Banderol resmi <strong>Rp 565.000</strong>, dengan promo launching <strong>30% off</strong> menjadi Rp 395.000 hingga akhir Mei. Setiap pembelian mendapat garansi resmi 1 tahun dan free ongkir se-Indonesia.</p>
+
+<blockquote>"Kami ingin Future 66 III jadi raket yang bisa tumbuh bersama pemain — cocok dari level club sampai turnamen regional." — Head of R&amp;D JP-POWER Indonesia.</blockquote>
+`
+  },
+  {
+    id: 'tips-memilih-raket',
+    tag: 'TUTORIAL',
+    date: { d: '08', m: 'MAY', full: '8 Mei 2026' },
+    image: 'assets/unggulan2.jpg',
+    title: '5 Tips Memilih Raket Sesuai Gaya Bermain Anda',
+    excerpt: 'Bingung pilih raket head-heavy atau head-light? Berikut panduan lengkapnya.',
+    author: 'Coach Bayu W.',
+    readTime: '7 menit baca',
+    content: `
+<p class="lead">Memilih raket badminton yang tepat itu seperti memilih sepatu — harus pas dengan kaki, gaya jalan, dan medan yang dilewati. Salah pilih raket bukan cuma bikin performa turun, tapi juga rentan cedera. Berikut 5 tips praktis dari coach kami.</p>
+
+<h2>1. Kenali Gaya Bermain Anda</h2>
+<p>Sebelum belanja, jujur dulu sama diri sendiri: anda tipe penyerang yang doyan smash? Atau lebih nyaman main rally panjang dengan placement akurat? Tiga arketipe umum:</p>
+<ul>
+  <li><strong>Attacker</strong> — andalan smash → cari raket head-heavy + stiff shaft</li>
+  <li><strong>All-rounder</strong> — bisa attack &amp; defense → raket even-balance + medium flex</li>
+  <li><strong>Defender</strong> — fokus rally &amp; control → head-light + flexible shaft</li>
+</ul>
+
+<h2>2. Berat Raket (U Rating)</h2>
+<p>Semakin kecil angka U, semakin berat raket:</p>
+<ul>
+  <li><strong>2U</strong> (90–94g) — power maksimal, butuh tenaga ekstra</li>
+  <li><strong>3U</strong> (85–89g) — balance power &amp; speed</li>
+  <li><strong>4U</strong> (80–84g) — paling populer, ringan &amp; cepat</li>
+  <li><strong>5U</strong> (75–79g) — super ringan, ideal pemula &amp; junior</li>
+</ul>
+
+<h2>3. Titik Keseimbangan (Balance Point)</h2>
+<p>Letak titik balance dari grip menentukan karakter raket:</p>
+<ul>
+  <li><strong>≤ 285mm</strong> — Head Light (defense, drive cepat)</li>
+  <li><strong>285–295mm</strong> — Even Balance (all-round)</li>
+  <li><strong>≥ 295mm</strong> — Head Heavy (smash, attacking)</li>
+</ul>
+
+<h2>4. Fleksibilitas Shaft</h2>
+<p>Shaft yang lebih flex membantu pemain dengan power kurang. Shaft stiff memberi kontrol lebih untuk pemain yang sudah punya teknik solid. Kalau ragu, mulai dari medium dulu.</p>
+
+<h2>5. String Tension</h2>
+<p>Tension bukan soal "semakin tinggi semakin bagus." Tension tinggi = kontrol tajam tapi butuh teknik. Tension rendah = power lebih besar tapi kurang akurat. Rekomendasi:</p>
+<ul>
+  <li>Pemula: 22–24 LBS</li>
+  <li>Intermediate: 25–27 LBS</li>
+  <li>Advanced: 28–30 LBS</li>
+  <li>Pro level: 30 LBS+</li>
+</ul>
+
+<p><strong>Tip bonus:</strong> jangan beli raket cuma karena dipakai pemain pro favorit. Anatomi tangan, gaya pukul, dan power tiap orang beda. Test feel-nya dulu kalau ada display unit di toko.</p>
+`
+  },
+  {
+    id: 'hybrid-pro-vs-kompetitor',
+    tag: 'REVIEW',
+    date: { d: '02', m: 'MAY', full: '2 Mei 2026' },
+    image: 'assets/feed1.jpg',
+    title: 'Hybrid Pro vs Kompetitor: Mana yang Terbaik untuk Lapangan Vinyl?',
+    excerpt: 'Tes mendalam grip, stabilitas, dan kenyamanan sepatu Hybrid Pro.',
+    author: 'Adi Pratama',
+    readTime: '6 menit baca',
+    content: `
+<p class="lead">Lapangan vinyl punya karakter unik — permukaannya cukup grip tapi licin kalau basah, dan padatnya menuntut sepatu dengan cushion yang responsif. Kami melakukan side-by-side test selama 3 minggu untuk membandingkan JP-POWER <strong>Hybrid Pro</strong> dengan tiga sepatu kompetitor populer.</p>
+
+<h2>Metode Pengujian</h2>
+<p>4 tester dengan playing style berbeda (attacker, all-rounder, defender, doubles specialist) memakai keempat sepatu secara bergantian selama latihan 2 jam/sesi, 5 sesi per sepatu. Penilaian: grip (1-10), stability (1-10), comfort (1-10), durability setelah 10 sesi.</p>
+
+<h2>Hasil per Kategori</h2>
+
+<h3>Grip di Lapangan Vinyl</h3>
+<p>Hybrid Pro skor <strong>9.2/10</strong> — outsole dengan carbon herringbone pattern memberi cengkraman maksimal saat lunge dan stop sudden. Kompetitor A: 8.5, B: 8.8, C: 7.9.</p>
+
+<h3>Stability &amp; Anti-Twist</h3>
+<p>Dengan TPU shank di midfoot, Hybrid Pro skor <strong>9.0/10</strong> untuk stability lateral. Tester defender melaporkan zero ankle roll selama trial. Kompetitor: 8.0–8.5.</p>
+
+<h3>Cushion &amp; Comfort</h3>
+<p>EVA foam dengan power-cushion gel di tumit dan forefoot — skor <strong>8.7/10</strong>. Salah satu kompetitor masih unggul tipis (8.9) tapi terasa berat (+45g). Untuk multi-game, Hybrid Pro lebih hemat energi.</p>
+
+<h3>Durability</h3>
+<p>Setelah 10 sesi (≈20 jam main), sole Hybrid Pro hanya menunjukkan wear minimal di area pivot. Stitching upper masih utuh. <strong>Solid build quality.</strong></p>
+
+<h2>Skor Akhir</h2>
+<table style="width:100%;border-collapse:collapse;margin:18px 0">
+  <thead><tr style="background:#f5f5f7"><th style="padding:10px;text-align:left">Sepatu</th><th style="padding:10px">Grip</th><th style="padding:10px">Stability</th><th style="padding:10px">Comfort</th><th style="padding:10px">Overall</th></tr></thead>
+  <tbody>
+    <tr><td style="padding:10px"><strong>JP Hybrid Pro</strong></td><td style="text-align:center">9.2</td><td style="text-align:center">9.0</td><td style="text-align:center">8.7</td><td style="text-align:center"><strong>8.97</strong></td></tr>
+    <tr><td style="padding:10px">Kompetitor A</td><td style="text-align:center">8.5</td><td style="text-align:center">8.3</td><td style="text-align:center">8.6</td><td style="text-align:center">8.47</td></tr>
+    <tr><td style="padding:10px">Kompetitor B</td><td style="text-align:center">8.8</td><td style="text-align:center">8.5</td><td style="text-align:center">8.9</td><td style="text-align:center">8.73</td></tr>
+    <tr><td style="padding:10px">Kompetitor C</td><td style="text-align:center">7.9</td><td style="text-align:center">8.0</td><td style="text-align:center">8.4</td><td style="text-align:center">8.10</td></tr>
+  </tbody>
+</table>
+
+<h2>Vonis</h2>
+<p>Untuk lapangan vinyl, <strong>JP-POWER Hybrid Pro</strong> jadi rekomendasi utama kami berkat kombinasi grip carbon herringbone yang dominan dan stability TPU shank yang stabil. Apalagi dengan harga yang ~25% lebih murah dari Kompetitor B, value-nya susah dikalahkan.</p>
+`
+  }
+];
+
+window.JP_findArticle = (id) => window.JP_ARTICLES.find(a => a.id === id);
+
 // ============ CONFIG ============
 window.JP_CONFIG = {
   whatsappNumber: '6281234567890', // ganti nomor WA bisnis
