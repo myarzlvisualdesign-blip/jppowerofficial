@@ -141,17 +141,6 @@
     </div>
   </div>
 </footer>
-<aside class="floating-side" id="floatSide">
-  <button class="fs-close" id="fsClose" aria-label="Close">×</button>
-  <div class="fs-slider" id="fsSlider">
-    <a href="product-detail.html?id=dragon-z-attack" class="fs-slide active"><img src="assets/unggulan2.jpg" alt="Dragon Z" /></a>
-    <a href="product-detail.html?id=magnum-x10" class="fs-slide"><img src="assets/unggulan3.jpg" alt="Magnum X10" /></a>
-    <a href="product-detail.html?id=future-66-iii" class="fs-slide"><img src="assets/future66.png" alt="Future 66" /></a>
-    <a href="product-detail.html?id=hybrid-pro-black" class="fs-slide"><img src="assets/feed1.jpg" alt="Hybrid Pro" /></a>
-    <a href="product-detail.html?id=hybrid-rn-8000" class="fs-slide"><img src="assets/feed2.jpg" alt="RN-8000" /></a>
-  </div>
-  <div class="fs-caption">NEW ARRIVAL</div>
-</aside>
 <a href="https://wa.me/${window.JP_CONFIG ? window.JP_CONFIG.whatsappNumber : '6281234567890'}" class="wa-float" aria-label="Chat WhatsApp"><svg viewBox="0 0 32 32" width="32" height="32" fill="#fff" aria-hidden="true"><path d="M16.003 0C7.171 0 .002 7.169.002 16c0 2.823.737 5.572 2.137 7.989L0 32l8.225-2.155A15.94 15.94 0 0 0 16.003 32C24.831 32 32 24.831 32 16S24.831 0 16.003 0Zm0 29.227a13.21 13.21 0 0 1-6.72-1.838l-.482-.286-4.886 1.281 1.305-4.762-.314-.493A13.205 13.205 0 0 1 2.78 16c0-7.293 5.93-13.223 13.223-13.223 3.531 0 6.85 1.376 9.348 3.873a13.135 13.135 0 0 1 3.875 9.355c0 7.293-5.931 13.222-13.223 13.222Zm7.244-9.9c-.397-.198-2.348-1.158-2.712-1.291-.364-.132-.629-.198-.893.199-.265.397-1.025 1.291-1.257 1.555-.231.265-.463.298-.86.099-.397-.198-1.677-.617-3.193-1.969-1.18-1.052-1.976-2.351-2.208-2.748-.231-.397-.025-.611.174-.809.179-.179.397-.463.595-.695.198-.231.265-.397.397-.661.132-.265.066-.496-.033-.694-.099-.198-.893-2.152-1.223-2.946-.322-.773-.65-.668-.893-.68-.231-.012-.496-.014-.76-.014-.265 0-.694.099-1.058.496-.364.397-1.39 1.358-1.39 3.312s1.423 3.842 1.621 4.106c.199.265 2.799 4.273 6.78 5.992.948.409 1.687.653 2.264.836.951.302 1.817.26 2.502.157.764-.114 2.348-.96 2.679-1.887.33-.926.33-1.72.231-1.886-.099-.165-.363-.264-.76-.462Z"/></svg></a>`;
 
   const headerEl = document.getElementById('siteHeader');

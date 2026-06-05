@@ -3,274 +3,394 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Katalog JP-POWER | Japan Technology Badminton</title>
-<meta name="description" content="Katalog produk lengkap JP-POWER. Lihat semua raket, sepatu, apparel, dan aksesoris badminton terbaru." />
+<title>Katalog JP-POWER 2026 | Japan Technology Badminton</title>
+<meta name="description" content="Katalog digital JP-POWER 2026 — lihat semua koleksi raket, sepatu, apparel badminton." />
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css?v=7" />
 <style>
-/* ===== FLIPBOOK CATALOG STYLES ===== */
-.catalog-hero {
-  background: var(--ink);
-  padding: 60px 0 40px;
+/* =========================================
+   FLIPBOOK CATALOG — 3D PAGE FLIP STYLE
+   ========================================= */
+
+body { background: #1a1a1a; }
+
+.cat-page-hero {
+  background: #111;
+  padding: 48px 0 32px;
   text-align: center;
-  color: #fff;
 }
-.catalog-hero h1 {
+.cat-page-hero h1 {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(36px, 6vw, 72px);
-  letter-spacing: .05em;
-  margin-bottom: 8px;
+  font-size: clamp(32px, 5vw, 60px);
+  color: #fff;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
 }
-.catalog-hero p {
-  color: rgba(255,255,255,.6);
-  font-size: 15px;
-  margin-bottom: 28px;
-}
-.catalog-hero .hero-tabs {
+.cat-page-hero p { color: rgba(255,255,255,.45); font-size: 14px; margin-bottom: 24px; }
+
+.cat-tabs {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
-.hero-tab {
-  padding: 8px 22px;
+.cat-tab {
+  padding: 7px 20px;
   border-radius: 100px;
-  border: 1px solid rgba(255,255,255,.25);
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   letter-spacing: .1em;
-  font-size: 13px;
-  color: rgba(255,255,255,.7);
+  font-size: 12px;
   cursor: pointer;
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.6);
   background: transparent;
   transition: all .2s;
 }
-.hero-tab.active, .hero-tab:hover { background: var(--green); color: #fff; border-color: var(--green); }
-
-/* Flipbook container */
-.flipbook-section {
-  background: #f0f0f0;
-  padding: 40px 0 60px;
-  min-height: 80vh;
-}
-.flipbook-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-.flipbook-stage {
-  perspective: 2000px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px 0;
-}
-.flipbook {
-  position: relative;
-  display: flex;
-  gap: 4px;
-}
-/* Two-page spread */
-.flip-spread {
-  display: flex;
-  box-shadow: 0 20px 60px rgba(0,0,0,.3);
-  border-radius: 4px 4px 2px 2px;
-  overflow: hidden;
-  max-width: 960px;
-  width: 100%;
-}
-.flip-page {
-  flex: 1;
-  min-height: 560px;
-  position: relative;
-  overflow: hidden;
-}
-.flip-page-left {
-  border-right: 2px solid rgba(0,0,0,.08);
+.cat-tab.active, .cat-tab:hover {
+  background: #00B140;
+  color: #fff;
+  border-color: #00B140;
 }
 
-/* Page variants */
-.page-cover {
-  background: var(--ink);
+/* ---- Flipbook Stage ---- */
+.flipbook-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  color: #fff;
-  padding: 40px;
-  text-align: center;
+  padding: 40px 20px 60px;
+  background: #1a1a1a;
+  min-height: calc(100vh - 200px);
 }
-.page-cover .cover-logo { width: 80px; margin-bottom: 20px; filter: brightness(0) invert(1); }
-.page-cover h2 { font-family: 'Anton', sans-serif; font-size: 48px; letter-spacing: .06em; margin-bottom: 6px; }
-.page-cover .cover-sub { font-family: 'Barlow Condensed', sans-serif; letter-spacing: .2em; font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 32px; }
-.page-cover .cover-year { font-family: 'Barlow Condensed', sans-serif; font-size: 80px; font-weight: 800; color: var(--green); line-height: 1; }
-.page-cover .cover-stripe { width: 60px; height: 3px; background: var(--green); margin: 20px auto; }
 
-.page-white { background: #fff; }
-.page-dark { background: var(--ink); color: #fff; }
-.page-green { background: var(--green); color: #fff; }
-.page-grey { background: #f8f8f8; }
+.book-stage {
+  perspective: 2400px;
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  justify-content: center;
+}
 
-/* Page content layouts */
-.page-inner {
-  padding: 32px 28px;
+/* The open book container */
+.book-open {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 940px;
+  height: 600px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+  border-radius: 3px 8px 8px 3px;
+  transform-style: preserve-3d;
+}
+
+/* Spine */
+.book-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  transform: translateX(-50%);
+  background: linear-gradient(to right, #0a0a0a, #2a2a2a 40%, #1a1a1a 60%, #0a0a0a);
+  z-index: 10;
+  box-shadow: inset -2px 0 4px rgba(0,0,0,.5), inset 2px 0 4px rgba(0,0,0,.5);
+}
+
+/* Page halves */
+.page-left,
+.page-right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+.page-left {
+  border-radius: 3px 0 0 3px;
+  transform-origin: right center;
+}
+.page-right {
+  border-radius: 0 8px 8px 0;
+  transform-origin: left center;
+}
+
+/* Page flip animation classes */
+.page-left.flip-out {
+  animation: flipOutLeft .45s cubic-bezier(.645,.045,.355,1) forwards;
+}
+.page-right.flip-in {
+  animation: flipInRight .45s cubic-bezier(.645,.045,.355,1) forwards;
+}
+.page-right.flip-out {
+  animation: flipOutRight .45s cubic-bezier(.645,.045,.355,1) forwards;
+}
+.page-left.flip-in {
+  animation: flipInLeft .45s cubic-bezier(.645,.045,.355,1) forwards;
+}
+
+@keyframes flipOutLeft {
+  0%   { transform: rotateY(0deg); box-shadow: none; }
+  50%  { transform: rotateY(-90deg); box-shadow: inset -10px 0 30px rgba(0,0,0,.4); }
+  100% { transform: rotateY(-180deg); opacity: 0; }
+}
+@keyframes flipInRight {
+  0%   { transform: rotateY(180deg); opacity: 0; }
+  50%  { transform: rotateY(90deg); box-shadow: inset 10px 0 30px rgba(0,0,0,.4); }
+  100% { transform: rotateY(0deg); }
+}
+@keyframes flipOutRight {
+  0%   { transform: rotateY(0deg); }
+  50%  { transform: rotateY(90deg); box-shadow: inset 10px 0 30px rgba(0,0,0,.4); }
+  100% { transform: rotateY(180deg); opacity: 0; }
+}
+@keyframes flipInLeft {
+  0%   { transform: rotateY(-180deg); opacity: 0; }
+  50%  { transform: rotateY(-90deg); box-shadow: inset -10px 0 30px rgba(0,0,0,.4); }
+  100% { transform: rotateY(0deg); }
+}
+
+/* Shadow overlay on pages during flip */
+.page-left::after,
+.page-right::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.page-right::after { box-shadow: inset 4px 0 20px rgba(0,0,0,.15); }
+.page-left::after  { box-shadow: inset -4px 0 20px rgba(0,0,0,.15); }
+
+/* ---- Page content themes ---- */
+.pg {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-.page-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px;
-  letter-spacing: .2em;
-  color: var(--grey-400);
-  margin-bottom: auto;
-  align-self: flex-end;
-}
-.page-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  letter-spacing: .2em;
-  font-size: 11px;
-  color: var(--green);
-  margin-bottom: 8px;
-}
-.page-title {
-  font-family: 'Anton', sans-serif;
-  font-size: clamp(22px, 3vw, 34px);
-  letter-spacing: .04em;
-  margin-bottom: 14px;
-  line-height: 1.1;
-}
-.page-desc {
-  font-size: 13px;
-  color: var(--grey-600);
-  line-height: 1.65;
-  margin-bottom: 16px;
-}
-
-/* Product grid inside page */
-.page-product-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  flex: 1;
-}
-.page-product-item {
-  background: var(--grey-50);
-  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid var(--grey-100);
-  cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
-  text-decoration: none;
-  color: inherit;
-  display: block;
 }
-.page-product-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.12); }
-.page-product-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-.page-product-info { padding: 10px 12px; }
-.page-product-info h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .04em; margin-bottom: 3px; }
-.page-product-info .price { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; color: var(--green); }
-
-/* Single product feature */
-.page-feature-img {
-  flex: 1;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-.page-feature-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Spec table inside page */
-.page-spec-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
-.page-spec-table tr { border-bottom: 1px solid var(--grey-100); }
-.page-spec-table td { padding: 7px 4px; }
-.page-spec-table td:first-child { color: var(--grey-500); width: 40%; }
-.page-spec-table td:last-child { font-weight: 600; color: var(--ink); }
-
-/* Price badge */
-.page-price-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: auto;
-}
-.page-price-main { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 600; color: var(--green); }
-.page-price-old { font-size: 13px; color: var(--grey-400); text-decoration: line-through; }
-.page-badge { background: var(--red); color: #fff; font-size: 11px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: .1em; }
-
-/* TOC page */
-.toc-list { list-style: none; padding: 0; margin: 0; flex: 1; }
-.toc-list li { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--grey-100); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: .06em; cursor: pointer; }
-.toc-list li:hover { color: var(--green); }
-.toc-list .toc-dot { flex: 1; margin: 0 12px; border-bottom: 1px dotted var(--grey-300); }
-.toc-list .toc-page { font-size: 13px; color: var(--grey-500); }
-
-/* Dark page adaptations */
-.page-dark .page-label { color: var(--green-neon); }
-.page-dark .page-title { color: #fff; }
-.page-dark .page-desc { color: rgba(255,255,255,.6); }
-.page-dark .page-num { color: rgba(255,255,255,.3); }
-.page-dark .page-product-item { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
-.page-dark .page-product-info h5 { color: #fff; }
-.page-green .page-label, .page-green .page-num { color: rgba(255,255,255,.6); }
-.page-green .page-title { color: #fff; }
-
-/* Navigation controls */
-.flipbook-controls {
-  display: flex;
+.pg-cover {
+  background: linear-gradient(135deg, #0a1a0a 0%, #0d2e0d 50%, #0a1a0a 100%);
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  text-align: center;
+  color: #fff;
+  padding: 40px 30px;
+  position: relative;
+}
+.pg-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 30%, rgba(0,177,64,.18) 0%, transparent 70%);
+}
+.pg-cover-logo { width: 64px; margin-bottom: 16px; position: relative; z-index: 1; filter: brightness(0) invert(1); }
+.pg-cover-year { font-family: 'Anton', sans-serif; font-size: 72px; color: #00B140; line-height: 1; position: relative; z-index: 1; }
+.pg-cover-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .2em; font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 6px; position: relative; z-index: 1; }
+.pg-cover-line { width: 48px; height: 3px; background: #00B140; margin: 14px auto; position: relative; z-index: 1; }
+.pg-cover-sub { font-family: 'Barlow Condensed', sans-serif; letter-spacing: .15em; font-size: 11px; color: rgba(255,255,255,.4); position: relative; z-index: 1; }
+
+.pg-white { background: #fff; color: #111; }
+.pg-dark  { background: #0f1f0f; color: #fff; }
+.pg-grey  { background: #f5f5f5; color: #111; }
+.pg-green { background: #00B140; color: #fff; }
+
+.pg-inner { padding: 32px 28px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+
+.pg-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: .22em;
+  font-size: 10px;
+  color: #00B140;
+  margin-bottom: 6px;
+}
+.pg-dark .pg-eyebrow { color: #4ade80; }
+.pg-green .pg-eyebrow { color: rgba(255,255,255,.7); }
+
+.pg-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(20px, 2.5vw, 30px);
+  letter-spacing: .04em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.pg-dark .pg-title { color: #fff; }
+.pg-green .pg-title { color: #fff; }
+
+.pg-desc {
+  font-size: 12px;
+  line-height: 1.65;
+  color: #555;
+  margin-bottom: 12px;
+}
+.pg-dark .pg-desc { color: rgba(255,255,255,.55); }
+.pg-green .pg-desc { color: rgba(255,255,255,.8); }
+
+.pg-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: #bbb;
+  margin-top: auto;
+  text-align: right;
+}
+.pg-dark .pg-num { color: rgba(255,255,255,.25); }
+
+/* Product grid */
+.pg-prod-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+.pg-prod-card {
+  background: #f8f8f8;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s;
+}
+.pg-prod-card:hover { transform: scale(1.02); }
+.pg-prod-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.pg-prod-card-info { padding: 8px 10px; }
+.pg-prod-card-info h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .04em; margin-bottom: 2px; color: #111; }
+.pg-prod-card-info .price { font-family: 'Oswald', sans-serif; font-size: 12px; color: #00B140; }
+.pg-dark .pg-prod-card { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.1); }
+.pg-dark .pg-prod-card-info h5 { color: #fff; }
+
+/* Feature image */
+.pg-feat-img {
+  flex: 1;
+  min-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.pg-feat-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Spec table */
+.pg-specs { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+.pg-specs tr { border-bottom: 1px solid #eee; }
+.pg-specs td { padding: 6px 3px; }
+.pg-specs td:first-child { color: #888; }
+.pg-specs td:last-child { font-weight: 600; text-align: right; }
+.pg-dark .pg-specs tr { border-color: rgba(255,255,255,.08); }
+.pg-dark .pg-specs td:first-child { color: rgba(255,255,255,.4); }
+.pg-dark .pg-specs td:last-child { color: #fff; }
+
+/* Price */
+.pg-price { font-family: 'Oswald', sans-serif; font-size: 20px; color: #00B140; font-weight: 600; }
+.pg-price-old { font-size: 12px; color: #aaa; text-decoration: line-through; margin-right: 6px; }
+.pg-badge { background: #e50914; color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 10px; padding: 3px 7px; border-radius: 4px; letter-spacing: .1em; }
+
+/* TOC */
+.pg-toc { list-style: none; padding: 0; margin: 0; flex: 1; }
+.pg-toc li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid #eee;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: color .15s;
+}
+.pg-toc li:hover { color: #00B140; }
+.pg-toc .dot { flex: 1; margin: 0 10px; border-bottom: 1px dotted #ccc; }
+.pg-toc .pn { font-size: 11px; color: #aaa; }
+
+/* ---- Controls ---- */
+.flip-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin-top: 28px;
 }
 .flip-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 28px;
+  gap: 6px;
+  padding: 11px 26px;
   border-radius: 100px;
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   letter-spacing: .12em;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: all .2s;
-  border: 2px solid var(--ink);
-  background: #fff;
-  color: var(--ink);
+  border: 2px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.7);
 }
-.flip-btn:hover { background: var(--ink); color: #fff; }
-.flip-btn.active-btn { background: var(--green); color: #fff; border-color: var(--green); }
-.flip-btn:disabled { opacity: .35; pointer-events: none; }
-.flip-indicator {
+.flip-btn:hover { background: #00B140; color: #fff; border-color: #00B140; }
+.flip-btn:disabled { opacity: .25; pointer-events: none; }
+.flip-page-num {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: .1em;
-  color: var(--grey-500);
-  min-width: 80px;
+  color: rgba(255,255,255,.4);
+  min-width: 60px;
   text-align: center;
 }
 
-/* Page transition */
-.flip-spread {
-  transition: opacity .35s ease;
+/* Thumbnails */
+.flip-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  overflow-x: auto;
+  padding: 4px 0 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.15) transparent;
+  max-width: 940px;
+  width: 100%;
 }
-.flip-spread.flipping { opacity: 0; transform: scale(.98); }
+.flip-thumb {
+  flex-shrink: 0;
+  width: 60px;
+  height: 40px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color .2s, transform .2s;
+  opacity: .5;
+}
+.flip-thumb.active { border-color: #00B140; opacity: 1; transform: scale(1.05); }
+.flip-thumb:hover { opacity: .9; }
+.flip-thumb canvas, .flip-thumb-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
 
-/* Mobile */
+/* ---- Mobile ---- */
 @media (max-width: 768px) {
-  .flip-spread { flex-direction: column; }
-  .flip-page-left { border-right: none; border-bottom: 2px solid rgba(0,0,0,.08); }
-  .flip-page { min-height: 400px; }
-  .page-inner { padding: 24px 20px; }
-  .page-title { font-size: 22px; }
-}
-@media (max-width: 480px) {
-  .flip-page { min-height: 320px; }
+  .book-open { flex-direction: column; height: auto; max-height: none; }
+  .page-left, .page-right { border-radius: 0; }
+  .page-left { border-radius: 8px 8px 0 0; }
+  .page-right { border-radius: 0 0 8px 8px; }
+  .book-spine { display: none; }
+  .pg-inner { padding: 22px 18px; }
+  .pg-title { font-size: 18px; }
+  .flip-thumbs { display: none; }
 }
 </style>
 </head>
@@ -278,36 +398,40 @@
 
 <div id="siteHeader"></div>
 
-<div class="catalog-hero">
+<div class="cat-page-hero">
   <div class="container">
-    <p style="font-family:'Barlow Condensed',sans-serif;letter-spacing:.2em;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px">JP-POWER OFFICIAL</p>
+    <p style="font-family:'Barlow Condensed',sans-serif;letter-spacing:.25em;font-size:11px;color:rgba(255,255,255,.35);margin-bottom:4px">JP-POWER OFFICIAL</p>
     <h1>KATALOG 2026</h1>
     <p>Koleksi lengkap Japan Technology Badminton Equipment</p>
-    <div class="hero-tabs">
-      <button class="hero-tab active" data-chapter="all">SEMUA</button>
-      <button class="hero-tab" data-chapter="raket">RAKET</button>
-      <button class="hero-tab" data-chapter="shoes">SHOES</button>
-      <button class="hero-tab" data-chapter="apparel">APPAREL</button>
-      <button class="hero-tab" data-chapter="aksesoris">AKSESORIS</button>
+    <div class="cat-tabs">
+      <button class="cat-tab active" data-go="0">COVER</button>
+      <button class="cat-tab" data-go="1">RAKET</button>
+      <button class="cat-tab" data-go="3">SHOES</button>
+      <button class="cat-tab" data-go="4">APPAREL</button>
+      <button class="cat-tab" data-go="5">AKSESORIS</button>
+      <button class="cat-tab" data-go="6">BAG</button>
+      <button class="cat-tab" data-go="7">INFO</button>
     </div>
   </div>
 </div>
 
-<section class="flipbook-section">
-  <div class="flipbook-container">
-    <div class="flipbook-stage">
-      <div class="flip-spread" id="flipSpread">
-        <!-- Pages rendered by JS -->
-      </div>
-    </div>
-
-    <div class="flipbook-controls">
-      <button class="flip-btn" id="flipPrev">&#8249; SEBELUMNYA</button>
-      <span class="flip-indicator" id="flipIndicator">1 / 10</span>
-      <button class="flip-btn active-btn" id="flipNext">BERIKUTNYA &#8250;</button>
+<div class="flipbook-wrap">
+  <div class="book-stage">
+    <div class="book-open" id="bookOpen">
+      <div class="page-left"  id="pageLeft"></div>
+      <div class="book-spine"></div>
+      <div class="page-right" id="pageRight"></div>
     </div>
   </div>
-</section>
+
+  <div class="flip-controls">
+    <button class="flip-btn" id="flipPrev">&#8592; SEBELUMNYA</button>
+    <span class="flip-page-num" id="flipNum">1 / 8</span>
+    <button class="flip-btn" id="flipNext">BERIKUTNYA &#8594;</button>
+  </div>
+
+  <div class="flip-thumbs" id="flipThumbs"></div>
+</div>
 
 <div id="siteFooter"></div>
 
@@ -320,354 +444,342 @@
 <script>
 (() => {
   const fmt = n => 'Rp ' + (n||0).toLocaleString('id-ID');
+  const prods = window.JP_PRODUCTS || [];
 
-  // ---- Define pages ----
-  const pages = [
-    // Spread 0: Cover + TOC
+  const prodGrid = (list) => list.slice(0,4).map(p => `
+    <a href="product-detail.html?id=${p.id}" class="pg-prod-card">
+      <img src="${p.image}" alt="${p.name}" loading="lazy" />
+      <div class="pg-prod-card-info">
+        <h5>${p.name}</h5>
+        <div class="price">${fmt(p.price)}</div>
+      </div>
+    </a>
+  `).join('');
+
+  // ---- Spread definitions ----
+  const spreads = [
+    // 0 — Cover + TOC
     {
-      left: {
-        type: 'cover',
-        html: `
-          <div class="page-cover">
-            <img class="cover-logo" src="assets/logo.png" alt="JP-POWER" />
-            <div class="cover-stripe"></div>
-            <div class="cover-sub">JAPAN TECHNOLOGY</div>
-            <div class="cover-year">2026</div>
-            <div class="cover-stripe"></div>
-            <div class="cover-sub" style="margin-top:8px">OFFICIAL PRODUCT CATALOG</div>
-          </div>
-        `
-      },
-      right: {
-        type: 'toc',
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">DAFTAR ISI</div>
-            <div class="page-title" style="margin-bottom:20px">TABLE OF CONTENTS</div>
-            <ul class="toc-list">
-              <li onclick="gotoChapter(1)"><span>RAKET BADMINTON</span><span class="toc-dot"></span><span class="toc-page">3</span></li>
-              <li onclick="gotoChapter(2)"><span>FEATURED RACKET</span><span class="toc-dot"></span><span class="toc-page">5</span></li>
-              <li onclick="gotoChapter(3)"><span>SHOES</span><span class="toc-dot"></span><span class="toc-page">7</span></li>
-              <li onclick="gotoChapter(4)"><span>APPAREL</span><span class="toc-dot"></span><span class="toc-page">9</span></li>
-              <li onclick="gotoChapter(5)"><span>STRING &amp; GRIP</span><span class="toc-dot"></span><span class="toc-page">11</span></li>
-              <li onclick="gotoChapter(6)"><span>BAG</span><span class="toc-dot"></span><span class="toc-page">13</span></li>
-              <li onclick="gotoChapter(7)"><span>CONTACT &amp; STORE</span><span class="toc-dot"></span><span class="toc-page">15</span></li>
+      label: 'COVER',
+      color: ['#0a1a0a','#fff'],
+      left: `
+        <div class="pg pg-cover">
+          <img class="pg-cover-logo" src="assets/logo.png" alt="JP-POWER" />
+          <div class="pg-cover-line"></div>
+          <div class="pg-cover-title">JAPAN TECHNOLOGY</div>
+          <div class="pg-cover-year">2026</div>
+          <div class="pg-cover-line"></div>
+          <div class="pg-cover-sub">OFFICIAL PRODUCT CATALOG</div>
+        </div>`,
+      right: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">DAFTAR ISI</div>
+            <div class="pg-title" style="margin-bottom:18px">TABLE OF CONTENTS</div>
+            <ul class="pg-toc">
+              <li data-go="1"><span>RAKET BADMINTON</span><span class="dot"></span><span class="pn">3</span></li>
+              <li data-go="2"><span>FEATURED RACKET</span><span class="dot"></span><span class="pn">5</span></li>
+              <li data-go="3"><span>SEPATU BADMINTON</span><span class="dot"></span><span class="pn">7</span></li>
+              <li data-go="4"><span>APPAREL</span><span class="dot"></span><span class="pn">9</span></li>
+              <li data-go="5"><span>STRING &amp; GRIP</span><span class="dot"></span><span class="pn">11</span></li>
+              <li data-go="6"><span>BAG COLLECTION</span><span class="dot"></span><span class="pn">13</span></li>
+              <li data-go="7"><span>CONTACT &amp; STORE</span><span class="dot"></span><span class="pn">15</span></li>
             </ul>
-            <div class="page-num">2</div>
+            <div class="pg-num">2</div>
           </div>
-        `
-      }
+        </div>`
     },
 
-    // Spread 1: Raket intro + grid
+    // 1 — Raket intro + grid
     {
-      left: {
-        html: `
-          <div class="page-dark page-inner">
-            <div class="page-label">CHAPTER 01</div>
-            <div class="page-title">RAKET BADMINTON</div>
-            <div class="page-desc">Raket JP-POWER menggunakan frame carbon woven high-modulus graphite dengan teknologi Aero-Force. Dirancang untuk smash mematikan, control presisi, dan durability tinggi.</div>
-            <div style="flex:1;border-radius:8px;overflow:hidden;margin-top:auto">
-              <img src="assets/banner1.jpg" style="width:100%;height:100%;object-fit:cover" alt="Raket Collection" />
-            </div>
-            <div class="page-num">3</div>
+      label: 'RAKET',
+      left: `
+        <div class="pg pg-dark">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">CHAPTER 01</div>
+            <div class="pg-title">RAKET BADMINTON</div>
+            <div class="pg-desc">Carbon woven high-modulus graphite. Aero-Force frame, Anti-Twist Technology, Power Boost System. Untuk smash mematikan & kontrol presisi.</div>
+            <div class="pg-feat-img"><img src="assets/banner1.jpg" alt="Raket" /></div>
+            <div class="pg-num">3</div>
           </div>
-        `
-      },
-      right: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">RAKET BADMINTON</div>
-            <div class="page-title">KOLEKSI RAKET</div>
-            <div class="page-product-grid"></div>
-            <div class="page-num">4</div>
+        </div>`,
+      right: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">RAKET COLLECTION</div>
+            <div class="pg-title">KOLEKSI RAKET</div>
+            <div class="pg-prod-grid">${prodGrid(prods.filter(p => p.category==='raket'))}</div>
+            <div class="pg-num">4</div>
           </div>
-        `,
-        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'raket').slice(0,4) : []
-      }
+        </div>`
     },
 
-    // Spread 2: Featured raket detail
+    // 2 — Featured Future 66 III
     {
-      left: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">FEATURED</div>
-            <div class="page-title">FUTURE 66 III</div>
-            <div class="page-feature-img">
-              <img src="assets/future66.png" alt="Future 66 III" />
+      label: 'FEATURED',
+      left: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">FEATURED RACKET</div>
+            <div class="pg-title">FUTURE 66 III</div>
+            <div class="pg-feat-img"><img src="assets/future66.png" alt="Future 66 III" /></div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:auto">
+              <span class="pg-price-old">Rp 565.000</span>
+              <span class="pg-price">Rp 395.000</span>
+              <span class="pg-badge">-30%</span>
             </div>
-            <div class="page-price-badge">
-              <span class="page-price-old">Rp 565.000</span>
-              <span class="page-price-main">Rp 395.000</span>
-              <span class="page-badge">-30%</span>
-            </div>
-            <div class="page-num">5</div>
+            <div class="pg-num">5</div>
           </div>
-        `
-      },
-      right: {
-        html: `
-          <div class="page-grey page-inner">
-            <div class="page-label">SPESIFIKASI</div>
-            <div class="page-title">FUTURE 66 III</div>
-            <div class="page-desc">All-round generasi terbaru dengan frame carbon woven baru. Kombinasi power dan control yang seimbang untuk semua level pemain.</div>
-            <table class="page-spec-table">
+        </div>`,
+      right: `
+        <div class="pg pg-grey">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">SPESIFIKASI</div>
+            <div class="pg-title">FUTURE 66 III</div>
+            <div class="pg-desc">All-round terbaru. Carbon woven frame, max tension 32 LBS, balance sempurna untuk semua level.</div>
+            <table class="pg-specs">
               <tr><td>Weight</td><td>4U · 80±3g</td></tr>
               <tr><td>Balance</td><td>295 ± 3 mm</td></tr>
               <tr><td>Flex</td><td>Medium (8.5)</td></tr>
               <tr><td>Max Tension</td><td>32 LBS</td></tr>
-              <tr><td>Frame</td><td>Carbon Woven · HM Graphite</td></tr>
+              <tr><td>Frame</td><td>Carbon Woven HM</td></tr>
               <tr><td>Grip Size</td><td>G5</td></tr>
-              <tr><td>Length</td><td>675 mm</td></tr>
             </table>
-            <a href="product-detail.html?id=future-66-iii" class="btn btn-primary" style="margin-top:auto;text-align:center;display:flex;justify-content:center"><span>LIHAT DETAIL →</span></a>
-            <div class="page-num">6</div>
+            <a href="product-detail.html?id=future-66-iii" class="btn btn-primary" style="margin-top:16px;display:flex;justify-content:center"><span>LIHAT DETAIL →</span></a>
+            <div class="pg-num">6</div>
           </div>
-        `
-      }
+        </div>`
     },
 
-    // Spread 3: Shoes
+    // 3 — Shoes
     {
-      left: {
-        html: `
-          <div class="page-green page-inner">
-            <div class="page-label">CHAPTER 02</div>
-            <div class="page-title">SHOES BADMINTON</div>
-            <div class="page-desc" style="color:rgba(255,255,255,.75)">Anti-twist sole, carbon outsole, lightweight upper. Grip maksimal di lapangan vinyl untuk performa optimal.</div>
-            <div style="flex:1;border-radius:8px;overflow:hidden;margin-top:16px">
-              <img src="assets/feed1.jpg" style="width:100%;height:100%;object-fit:cover" alt="Shoes" />
-            </div>
-            <div class="page-num" style="color:rgba(255,255,255,.4)">7</div>
+      label: 'SHOES',
+      left: `
+        <div class="pg pg-green">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">CHAPTER 02</div>
+            <div class="pg-title">SHOES BADMINTON</div>
+            <div class="pg-desc">Anti-twist sole, carbon outsole, lightweight upper. Grip maksimal di lapangan vinyl.</div>
+            <div class="pg-feat-img"><img src="assets/feed1.jpg" alt="Shoes" /></div>
+            <div class="pg-num" style="color:rgba(255,255,255,.35)">7</div>
           </div>
-        `
-      },
-      right: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">SHOES BADMINTON</div>
-            <div class="page-title">KOLEKSI SEPATU</div>
-            <div class="page-product-grid"></div>
-            <div class="page-num">8</div>
+        </div>`,
+      right: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">SHOES COLLECTION</div>
+            <div class="pg-title">KOLEKSI SEPATU</div>
+            <div class="pg-prod-grid">${prodGrid(prods.filter(p => p.category==='shoes'))}</div>
+            <div class="pg-num">8</div>
           </div>
-        `,
-        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'shoes').slice(0,4) : []
-      }
+        </div>`
     },
 
-    // Spread 4: Apparel
+    // 4 — Apparel
     {
-      left: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">CHAPTER 03</div>
-            <div class="page-title">APPAREL</div>
-            <div class="page-desc">Jersey set premium dengan material quick-dry, breathable, dan stretchable. Tampil stylish & performa optimal di lapangan.</div>
-            <div class="page-product-grid"></div>
-            <div class="page-num">9</div>
+      label: 'APPAREL',
+      left: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">CHAPTER 03</div>
+            <div class="pg-title">APPAREL</div>
+            <div class="pg-desc">Jersey premium — quick-dry, breathable, stretchable. Tampil stylish di lapangan.</div>
+            <div class="pg-prod-grid">${prodGrid(prods.filter(p => p.category==='apparel'))}</div>
+            <div class="pg-num">9</div>
           </div>
-        `,
-        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'apparel').slice(0,4) : []
-      },
-      right: {
-        html: `
-          <div class="page-dark page-inner">
-            <div class="page-label">FEATURED SET</div>
-            <div class="page-title">HYBRID RN-8000 SET</div>
-            <div class="page-feature-img">
-              <img src="assets/feed2.jpg" alt="Hybrid RN-8000" />
+        </div>`,
+      right: `
+        <div class="pg pg-dark">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">FEATURED SET</div>
+            <div class="pg-title">HYBRID RN-8000</div>
+            <div class="pg-feat-img"><img src="assets/feed2.jpg" alt="RN-8000" /></div>
+            <div class="pg-desc">Set lengkap T-Shirt + Grip + Skirt. Stretchable, breathable, quick-dry.</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="pg-price" style="color:#4ade80">Rp 279.000</span>
+              <span class="pg-badge" style="background:#00B140">SET</span>
             </div>
-            <div class="page-desc">Set lengkap T-Shirt + Grip Handuk + Skirt. Stretchable, breathable, quick-dry. Cooler material untuk performa optimal.</div>
-            <div class="page-price-badge">
-              <span class="page-price-main" style="color:var(--green-neon)">Rp 279.000</span>
-              <span class="page-badge" style="background:var(--green)">SET</span>
-            </div>
-            <div class="page-num">10</div>
+            <div class="pg-num">10</div>
           </div>
-        `
-      }
+        </div>`
     },
 
-    // Spread 5: String & Grip
+    // 5 — String & Grip
     {
-      left: {
-        html: `
-          <div class="page-grey page-inner">
-            <div class="page-label">CHAPTER 04</div>
-            <div class="page-title">STRING &amp; GRIP</div>
-            <div class="page-desc">Senar dan grip premium untuk performa terbaik. Berbagai pilihan warna dan ukuran untuk setiap gaya bermain.</div>
-            <div class="page-product-grid"></div>
-            <div class="page-num">11</div>
+      label: 'AKSESORI',
+      left: `
+        <div class="pg pg-grey">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">CHAPTER 04</div>
+            <div class="pg-title">STRING &amp; GRIP</div>
+            <div class="pg-desc">Senar 0.66mm high-tension &amp; grip premium untuk performa terbaik setiap rally.</div>
+            <div class="pg-prod-grid">${prodGrid(prods.filter(p => p.category==='grip'||p.category==='string'))}</div>
+            <div class="pg-num">11</div>
           </div>
-        `,
-        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'grip' || p.category === 'string').slice(0,4) : []
-      },
-      right: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">BEST SELLER</div>
-            <div class="page-title">GRIP JP 100 OG</div>
-            <div class="page-feature-img">
-              <img src="assets/unggulan6.jpg" alt="Grip JP 100 OG" />
-            </div>
-            <table class="page-spec-table">
+        </div>`,
+      right: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">BEST SELLER</div>
+            <div class="pg-title">GRIP JP 100 OG</div>
+            <div class="pg-feat-img"><img src="assets/unggulan6.jpg" alt="Grip" /></div>
+            <table class="pg-specs" style="margin-bottom:12px">
               <tr><td>Type</td><td>Overgrip</td></tr>
               <tr><td>Material</td><td>PU + Anti-Slip</td></tr>
               <tr><td>Length</td><td>1050 mm</td></tr>
             </table>
-            <div class="page-price-badge">
-              <span class="page-price-main">Rp 13.000</span>
-              <span class="page-badge" style="background:var(--green)">BEST SELLER</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="pg-price">Rp 13.000</span>
+              <span class="pg-badge" style="background:#00B140">BEST</span>
             </div>
-            <div class="page-num">12</div>
+            <div class="pg-num">12</div>
           </div>
-        `
-      }
+        </div>`
     },
 
-    // Spread 6: Bag
+    // 6 — Bag
     {
-      left: {
-        html: `
-          <div class="page-dark page-inner">
-            <div class="page-label">CHAPTER 05</div>
-            <div class="page-title">BAG COLLECTION</div>
-            <div class="page-desc" style="color:rgba(255,255,255,.6)">Thermal bag dan tour bag premium untuk membawa raket dengan aman dan gaya. Kapasitas hingga 12 raket.</div>
-            <div style="flex:1;border-radius:8px;overflow:hidden;margin-top:16px">
-              <img src="assets/banner.jpg" style="width:100%;height:100%;object-fit:cover" alt="Bag Collection" />
-            </div>
-            <div class="page-num" style="color:rgba(255,255,255,.3)">13</div>
+      label: 'BAG',
+      left: `
+        <div class="pg pg-dark">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">CHAPTER 05</div>
+            <div class="pg-title">BAG COLLECTION</div>
+            <div class="pg-desc">Thermal bag &amp; tour bag premium. Kapasitas 9–12 raket. Insulated compartment &amp; padded strap.</div>
+            <div class="pg-feat-img"><img src="assets/banner.jpg" alt="Bag" /></div>
+            <div class="pg-num" style="color:rgba(255,255,255,.25)">13</div>
           </div>
-        `
-      },
-      right: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">BAG</div>
-            <div class="page-title">KOLEKSI TAS</div>
-            <div class="page-product-grid"></div>
-            <div class="page-num">14</div>
+        </div>`,
+      right: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">BAG COLLECTION</div>
+            <div class="pg-title">KOLEKSI TAS</div>
+            <div class="pg-prod-grid">${prodGrid(prods.filter(p => p.category==='bag'))}</div>
+            <div class="pg-num">14</div>
           </div>
-        `,
-        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'bag').slice(0,4) : []
-      }
+        </div>`
     },
 
-    // Spread 7: Contact + back cover
+    // 7 — Contact + Back cover
     {
-      left: {
-        html: `
-          <div class="page-white page-inner">
-            <div class="page-label">CHAPTER 06</div>
-            <div class="page-title">HUBUNGI KAMI</div>
-            <div class="page-desc">Temukan produk JP-POWER di toko partner resmi kami atau belanja online 24 jam.</div>
-            <div style="display:flex;flex-direction:column;gap:12px;flex:1;margin-top:8px">
-              <div style="padding:14px;background:var(--grey-50);border-radius:10px;border:1px solid var(--grey-100)">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;margin-bottom:4px">ONLINE STORE</div>
-                <div style="font-size:13px;color:var(--grey-500)">jppowerofficial.pages.dev</div>
-                <div style="font-size:13px;color:var(--grey-500)">Shopee · Tokopedia · Lazada</div>
+      label: 'INFO',
+      left: `
+        <div class="pg pg-white">
+          <div class="pg-inner">
+            <div class="pg-eyebrow">CHAPTER 06</div>
+            <div class="pg-title">HUBUNGI KAMI</div>
+            <div style="display:flex;flex-direction:column;gap:10px;flex:1;margin-top:10px">
+              <div style="padding:12px 14px;background:#f5f5f5;border-radius:10px">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;font-size:12px;margin-bottom:3px">ONLINE STORE</div>
+                <div style="font-size:11px;color:#666">jppowerofficial.pages.dev</div>
+                <div style="font-size:11px;color:#666">Shopee · Tokopedia · Lazada</div>
               </div>
-              <div style="padding:14px;background:var(--grey-50);border-radius:10px;border:1px solid var(--grey-100)">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;margin-bottom:4px">WHATSAPP</div>
-                <div style="font-size:13px;color:var(--grey-500)">+62 812-3456-7890</div>
-                <div style="font-size:13px;color:var(--grey-500)">official@jp-power.com</div>
+              <div style="padding:12px 14px;background:#f5f5f5;border-radius:10px">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;font-size:12px;margin-bottom:3px">WHATSAPP</div>
+                <div style="font-size:11px;color:#666">+62 812-3456-7890</div>
+                <div style="font-size:11px;color:#666">official@jp-power.com</div>
               </div>
-              <div style="padding:14px;background:var(--green);border-radius:10px;color:#fff">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;margin-bottom:4px">PARTNER STORE</div>
-                <div style="font-size:13px;opacity:.85">Jakarta · Bandung · Surabaya</div>
-                <div style="font-size:13px;opacity:.85">Yogyakarta · Medan · Bali</div>
+              <div style="padding:12px 14px;background:#00B140;border-radius:10px;color:#fff">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;font-size:12px;margin-bottom:3px">PARTNER STORE</div>
+                <div style="font-size:11px;opacity:.85">Jakarta · Bandung · Surabaya</div>
+                <div style="font-size:11px;opacity:.85">Yogyakarta · Medan · Bali</div>
               </div>
             </div>
-            <div class="page-num">15</div>
+            <div class="pg-num">15</div>
           </div>
-        `
-      },
-      right: {
-        html: `
-          <div class="page-cover" style="background:var(--green)">
-            <div style="font-family:'Barlow Condensed',sans-serif;letter-spacing:.3em;font-size:12px;color:rgba(255,255,255,.6);margin-bottom:20px">JAPAN TECHNOLOGY ★★★★★</div>
-            <img class="cover-logo" src="assets/logo.png" alt="JP-POWER" style="width:120px" />
-            <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.14em;font-size:16px;color:rgba(255,255,255,.9)">OFFICIAL PRODUCT CATALOG</div>
-            <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.6)">2026 Edition</div>
-            <a href="product.html" class="btn btn-white" style="margin-top:28px"><span>BELANJA SEKARANG →</span></a>
-          </div>
-        `
-      }
+        </div>`,
+      right: `
+        <div class="pg pg-cover" style="background:linear-gradient(135deg,#003d20,#00B140)">
+          <img class="pg-cover-logo" src="assets/logo.png" alt="JP-POWER" style="width:80px" />
+          <div class="pg-cover-line" style="background:rgba(255,255,255,.4)"></div>
+          <div class="pg-cover-title">TERIMA KASIH</div>
+          <div style="font-family:'Anton',sans-serif;font-size:28px;color:#fff;letter-spacing:.06em;position:relative;z-index:1">JP-POWER</div>
+          <div class="pg-cover-sub" style="margin-top:8px">JAPAN TECHNOLOGY ★★★★★</div>
+          <div class="pg-cover-line" style="background:rgba(255,255,255,.4)"></div>
+          <a href="product.html" class="btn btn-white" style="position:relative;z-index:1;margin-top:12px"><span>BELANJA SEKARANG →</span></a>
+        </div>`
     }
   ];
 
-  // ---- Render engine ----
-  let currentSpread = 0;
-  const spreadEl = document.getElementById('flipSpread');
-  const prevBtn = document.getElementById('flipPrev');
-  const nextBtn = document.getElementById('flipNext');
-  const indicator = document.getElementById('flipIndicator');
+  // ---- State ----
+  let current = 0;
+  let animating = false;
+  const pageLeft  = document.getElementById('pageLeft');
+  const pageRight = document.getElementById('pageRight');
+  const prevBtn   = document.getElementById('flipPrev');
+  const nextBtn   = document.getElementById('flipNext');
+  const numEl     = document.getElementById('flipNum');
+  const thumbsEl  = document.getElementById('flipThumbs');
 
-  function renderPage(pageData) {
-    const div = document.createElement('div');
-    div.className = 'flip-page';
-    div.innerHTML = pageData.html;
-    // inject products if any
-    if (pageData.products && pageData.products.length) {
-      const grid = div.querySelector('.page-product-grid');
-      if (grid) {
-        grid.innerHTML = pageData.products.map(p => `
-          <a href="product-detail.html?id=${p.id}" class="page-product-item">
-            <img src="${p.image}" alt="${p.name}" />
-            <div class="page-product-info">
-              <h5>${p.name}</h5>
-              <div class="price">${fmt(p.price)}</div>
-            </div>
-          </a>
-        `).join('');
-      }
-    }
-    return div;
+  // ---- Build thumbnails ----
+  spreads.forEach((s, i) => {
+    const t = document.createElement('button');
+    t.className = 'flip-thumb' + (i===0?' active':'');
+    t.innerHTML = `<div class="flip-thumb-inner" style="background:${i===0?'#0a1a0a':'#f5f5f5'};color:${i===0?'#fff':'#111'}">${s.label}</div>`;
+    t.addEventListener('click', () => goTo(i, i > current ? 'next' : 'prev'));
+    thumbsEl.appendChild(t);
+  });
+
+  // ---- Render ----
+  function renderSpread(idx) {
+    pageLeft.innerHTML  = spreads[idx].left;
+    pageRight.innerHTML = spreads[idx].right;
+    // wire TOC links
+    document.querySelectorAll('[data-go]').forEach(el => {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => goTo(+el.dataset.go, +el.dataset.go > current ? 'next' : 'prev'));
+    });
   }
 
-  function goToSpread(idx) {
-    idx = Math.max(0, Math.min(pages.length - 1, idx));
-    spreadEl.classList.add('flipping');
+  function goTo(idx, dir) {
+    if (animating || idx === current || idx < 0 || idx >= spreads.length) return;
+    animating = true;
+    const outClass = dir === 'next' ? 'flip-out' : 'flip-out';
+    const inClass  = dir === 'next' ? 'flip-in'  : 'flip-in';
+
+    // Animate: right page flips for next, left page for prev
+    const animPage = dir === 'next' ? pageRight : pageLeft;
+    const flipOutAnim = dir === 'next' ? 'flipOutRight' : 'flipOutLeft';
+    const flipInAnim  = dir === 'next' ? 'flipInLeft'   : 'flipInRight';
+
+    animPage.style.animation = `${flipOutAnim} .4s cubic-bezier(.645,.045,.355,1) forwards`;
+
     setTimeout(() => {
-      spreadEl.innerHTML = '';
-      const leftPage = renderPage(pages[idx].left);
-      leftPage.classList.add('flip-page-left');
-      const rightPage = renderPage(pages[idx].right);
-      spreadEl.appendChild(leftPage);
-      spreadEl.appendChild(rightPage);
-      currentSpread = idx;
-      indicator.textContent = `${idx + 1} / ${pages.length}`;
-      prevBtn.disabled = idx === 0;
-      nextBtn.disabled = idx === pages.length - 1;
-      spreadEl.classList.remove('flipping');
-    }, 350);
+      current = idx;
+      renderSpread(current);
+      numEl.textContent = `${current + 1} / ${spreads.length}`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === spreads.length - 1;
+      // Update thumbnails
+      thumbsEl.querySelectorAll('.flip-thumb').forEach((t, i) => t.classList.toggle('active', i===current));
+      // Animate in
+      animPage.style.animation = `${flipInAnim} .4s cubic-bezier(.645,.045,.355,1) forwards`;
+      setTimeout(() => { animPage.style.animation = ''; animating = false; }, 420);
+    }, 400);
   }
 
-  window.gotoChapter = (idx) => goToSpread(idx);
+  prevBtn.addEventListener('click', () => goTo(current - 1, 'prev'));
+  nextBtn.addEventListener('click', () => goTo(current + 1, 'next'));
 
-  prevBtn.addEventListener('click', () => goToSpread(currentSpread - 1));
-  nextBtn.addEventListener('click', () => goToSpread(currentSpread + 1));
-
-  // Chapter tabs
-  const chapterMap = { all: 0, raket: 1, shoes: 3, apparel: 4, aksesoris: 5 };
-  document.querySelectorAll('.hero-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const ch = tab.dataset.chapter;
-      goToSpread(chapterMap[ch] || 0);
+  // Tab buttons in hero
+  document.querySelectorAll('.cat-tab[data-go]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      goTo(+btn.dataset.go, +btn.dataset.go > current ? 'next' : 'prev');
     });
   });
 
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goToSpread(currentSpread + 1);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goToSpread(currentSpread - 1);
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') goTo(current + 1, 'next');
+    if (e.key === 'ArrowLeft')  goTo(current - 1, 'prev');
   });
 
   // Initial render
-  setTimeout(() => goToSpread(0), 100);
+  renderSpread(0);
+  prevBtn.disabled = true;
 })();
 </script>
 </body>
