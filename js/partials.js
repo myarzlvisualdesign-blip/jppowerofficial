@@ -44,6 +44,7 @@
         <li><a class="${isActive('jp-store.html')}" href="jp-store.html">JP STORE</a></li>
         <li><a class="${isActive('online-store.html')}" href="online-store.html">ONLINE STORE</a></li>
         <li><a class="${isActive('offline.html')}" href="offline.html">TOKO OFFLINE PARTNER</a></li>
+        <li><a class="${isActive('catalog.html')}" href="catalog.html">KATALOG</a></li>
         <li><a class="${isActive('contact.html')}" href="contact.html">CONTACT US</a></li>
       </ul>
     </nav>

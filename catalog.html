@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Katalog JP-POWER | Japan Technology Badminton</title>
+<meta name="description" content="Katalog produk lengkap JP-POWER. Lihat semua raket, sepatu, apparel, dan aksesoris badminton terbaru." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css?v=7" />
+<style>
+/* ===== FLIPBOOK CATALOG STYLES ===== */
+.catalog-hero {
+  background: var(--ink);
+  padding: 60px 0 40px;
+  text-align: center;
+  color: #fff;
+}
+.catalog-hero h1 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(36px, 6vw, 72px);
+  letter-spacing: .05em;
+  margin-bottom: 8px;
+}
+.catalog-hero p {
+  color: rgba(255,255,255,.6);
+  font-size: 15px;
+  margin-bottom: 28px;
+}
+.catalog-hero .hero-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hero-tab {
+  padding: 8px 22px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.25);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: .1em;
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
+  cursor: pointer;
+  background: transparent;
+  transition: all .2s;
+}
+.hero-tab.active, .hero-tab:hover { background: var(--green); color: #fff; border-color: var(--green); }
+
+/* Flipbook container */
+.flipbook-section {
+  background: #f0f0f0;
+  padding: 40px 0 60px;
+  min-height: 80vh;
+}
+.flipbook-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.flipbook-stage {
+  perspective: 2000px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0;
+}
+.flipbook {
+  position: relative;
+  display: flex;
+  gap: 4px;
+}
+/* Two-page spread */
+.flip-spread {
+  display: flex;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  border-radius: 4px 4px 2px 2px;
+  overflow: hidden;
+  max-width: 960px;
+  width: 100%;
+}
+.flip-page {
+  flex: 1;
+  min-height: 560px;
+  position: relative;
+  overflow: hidden;
+}
+.flip-page-left {
+  border-right: 2px solid rgba(0,0,0,.08);
+}
+
+/* Page variants */
+.page-cover {
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 40px;
+  text-align: center;
+}
+.page-cover .cover-logo { width: 80px; margin-bottom: 20px; filter: brightness(0) invert(1); }
+.page-cover h2 { font-family: 'Anton', sans-serif; font-size: 48px; letter-spacing: .06em; margin-bottom: 6px; }
+.page-cover .cover-sub { font-family: 'Barlow Condensed', sans-serif; letter-spacing: .2em; font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 32px; }
+.page-cover .cover-year { font-family: 'Barlow Condensed', sans-serif; font-size: 80px; font-weight: 800; color: var(--green); line-height: 1; }
+.page-cover .cover-stripe { width: 60px; height: 3px; background: var(--green); margin: 20px auto; }
+
+.page-white { background: #fff; }
+.page-dark { background: var(--ink); color: #fff; }
+.page-green { background: var(--green); color: #fff; }
+.page-grey { background: #f8f8f8; }
+
+/* Page content layouts */
+.page-inner {
+  padding: 32px 28px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.page-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--grey-400);
+  margin-bottom: auto;
+  align-self: flex-end;
+}
+.page-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: .2em;
+  font-size: 11px;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+.page-title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(22px, 3vw, 34px);
+  letter-spacing: .04em;
+  margin-bottom: 14px;
+  line-height: 1.1;
+}
+.page-desc {
+  font-size: 13px;
+  color: var(--grey-600);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+/* Product grid inside page */
+.page-product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1;
+}
+.page-product-item {
+  background: var(--grey-50);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--grey-100);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.page-product-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.12); }
+.page-product-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.page-product-info { padding: 10px 12px; }
+.page-product-info h5 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .04em; margin-bottom: 3px; }
+.page-product-info .price { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; color: var(--green); }
+
+/* Single product feature */
+.page-feature-img {
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.page-feature-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Spec table inside page */
+.page-spec-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+.page-spec-table tr { border-bottom: 1px solid var(--grey-100); }
+.page-spec-table td { padding: 7px 4px; }
+.page-spec-table td:first-child { color: var(--grey-500); width: 40%; }
+.page-spec-table td:last-child { font-weight: 600; color: var(--ink); }
+
+/* Price badge */
+.page-price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+.page-price-main { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 600; color: var(--green); }
+.page-price-old { font-size: 13px; color: var(--grey-400); text-decoration: line-through; }
+.page-badge { background: var(--red); color: #fff; font-size: 11px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: .1em; }
+
+/* TOC page */
+.toc-list { list-style: none; padding: 0; margin: 0; flex: 1; }
+.toc-list li { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--grey-100); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: .06em; cursor: pointer; }
+.toc-list li:hover { color: var(--green); }
+.toc-list .toc-dot { flex: 1; margin: 0 12px; border-bottom: 1px dotted var(--grey-300); }
+.toc-list .toc-page { font-size: 13px; color: var(--grey-500); }
+
+/* Dark page adaptations */
+.page-dark .page-label { color: var(--green-neon); }
+.page-dark .page-title { color: #fff; }
+.page-dark .page-desc { color: rgba(255,255,255,.6); }
+.page-dark .page-num { color: rgba(255,255,255,.3); }
+.page-dark .page-product-item { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
+.page-dark .page-product-info h5 { color: #fff; }
+.page-green .page-label, .page-green .page-num { color: rgba(255,255,255,.6); }
+.page-green .page-title { color: #fff; }
+
+/* Navigation controls */
+.flipbook-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 28px;
+}
+.flip-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  letter-spacing: .12em;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+}
+.flip-btn:hover { background: var(--ink); color: #fff; }
+.flip-btn.active-btn { background: var(--green); color: #fff; border-color: var(--green); }
+.flip-btn:disabled { opacity: .35; pointer-events: none; }
+.flip-indicator {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  letter-spacing: .1em;
+  color: var(--grey-500);
+  min-width: 80px;
+  text-align: center;
+}
+
+/* Page transition */
+.flip-spread {
+  transition: opacity .35s ease;
+}
+.flip-spread.flipping { opacity: 0; transform: scale(.98); }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .flip-spread { flex-direction: column; }
+  .flip-page-left { border-right: none; border-bottom: 2px solid rgba(0,0,0,.08); }
+  .flip-page { min-height: 400px; }
+  .page-inner { padding: 24px 20px; }
+  .page-title { font-size: 22px; }
+}
+@media (max-width: 480px) {
+  .flip-page { min-height: 320px; }
+}
+</style>
+</head>
+<body>
+
+<div id="siteHeader"></div>
+
+<div class="catalog-hero">
+  <div class="container">
+    <p style="font-family:'Barlow Condensed',sans-serif;letter-spacing:.2em;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px">JP-POWER OFFICIAL</p>
+    <h1>KATALOG 2026</h1>
+    <p>Koleksi lengkap Japan Technology Badminton Equipment</p>
+    <div class="hero-tabs">
+      <button class="hero-tab active" data-chapter="all">SEMUA</button>
+      <button class="hero-tab" data-chapter="raket">RAKET</button>
+      <button class="hero-tab" data-chapter="shoes">SHOES</button>
+      <button class="hero-tab" data-chapter="apparel">APPAREL</button>
+      <button class="hero-tab" data-chapter="aksesoris">AKSESORIS</button>
+    </div>
+  </div>
+</div>
+
+<section class="flipbook-section">
+  <div class="flipbook-container">
+    <div class="flipbook-stage">
+      <div class="flip-spread" id="flipSpread">
+        <!-- Pages rendered by JS -->
+      </div>
+    </div>
+
+    <div class="flipbook-controls">
+      <button class="flip-btn" id="flipPrev">&#8249; SEBELUMNYA</button>
+      <span class="flip-indicator" id="flipIndicator">1 / 10</span>
+      <button class="flip-btn active-btn" id="flipNext">BERIKUTNYA &#8250;</button>
+    </div>
+  </div>
+</section>
+
+<div id="siteFooter"></div>
+
+<script src="js/data.js?v=7"></script>
+<script src="js/cart.js?v=7"></script>
+<script src="js/ui.js?v=7"></script>
+<script src="js/partials.js?v=7"></script>
+<script src="js/render.js?v=7"></script>
+<script src="js/main.js?v=7"></script>
+<script>
+(() => {
+  const fmt = n => 'Rp ' + (n||0).toLocaleString('id-ID');
+
+  // ---- Define pages ----
+  const pages = [
+    // Spread 0: Cover + TOC
+    {
+      left: {
+        type: 'cover',
+        html: `
+          <div class="page-cover">
+            <img class="cover-logo" src="assets/logo.png" alt="JP-POWER" />
+            <div class="cover-stripe"></div>
+            <div class="cover-sub">JAPAN TECHNOLOGY</div>
+            <div class="cover-year">2026</div>
+            <div class="cover-stripe"></div>
+            <div class="cover-sub" style="margin-top:8px">OFFICIAL PRODUCT CATALOG</div>
+          </div>
+        `
+      },
+      right: {
+        type: 'toc',
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">DAFTAR ISI</div>
+            <div class="page-title" style="margin-bottom:20px">TABLE OF CONTENTS</div>
+            <ul class="toc-list">
+              <li onclick="gotoChapter(1)"><span>RAKET BADMINTON</span><span class="toc-dot"></span><span class="toc-page">3</span></li>
+              <li onclick="gotoChapter(2)"><span>FEATURED RACKET</span><span class="toc-dot"></span><span class="toc-page">5</span></li>
+              <li onclick="gotoChapter(3)"><span>SHOES</span><span class="toc-dot"></span><span class="toc-page">7</span></li>
+              <li onclick="gotoChapter(4)"><span>APPAREL</span><span class="toc-dot"></span><span class="toc-page">9</span></li>
+              <li onclick="gotoChapter(5)"><span>STRING &amp; GRIP</span><span class="toc-dot"></span><span class="toc-page">11</span></li>
+              <li onclick="gotoChapter(6)"><span>BAG</span><span class="toc-dot"></span><span class="toc-page">13</span></li>
+              <li onclick="gotoChapter(7)"><span>CONTACT &amp; STORE</span><span class="toc-dot"></span><span class="toc-page">15</span></li>
+            </ul>
+            <div class="page-num">2</div>
+          </div>
+        `
+      }
+    },
+
+    // Spread 1: Raket intro + grid
+    {
+      left: {
+        html: `
+          <div class="page-dark page-inner">
+            <div class="page-label">CHAPTER 01</div>
+            <div class="page-title">RAKET BADMINTON</div>
+            <div class="page-desc">Raket JP-POWER menggunakan frame carbon woven high-modulus graphite dengan teknologi Aero-Force. Dirancang untuk smash mematikan, control presisi, dan durability tinggi.</div>
+            <div style="flex:1;border-radius:8px;overflow:hidden;margin-top:auto">
+              <img src="assets/banner1.jpg" style="width:100%;height:100%;object-fit:cover" alt="Raket Collection" />
+            </div>
+            <div class="page-num">3</div>
+          </div>
+        `
+      },
+      right: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">RAKET BADMINTON</div>
+            <div class="page-title">KOLEKSI RAKET</div>
+            <div class="page-product-grid"></div>
+            <div class="page-num">4</div>
+          </div>
+        `,
+        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'raket').slice(0,4) : []
+      }
+    },
+
+    // Spread 2: Featured raket detail
+    {
+      left: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">FEATURED</div>
+            <div class="page-title">FUTURE 66 III</div>
+            <div class="page-feature-img">
+              <img src="assets/future66.png" alt="Future 66 III" />
+            </div>
+            <div class="page-price-badge">
+              <span class="page-price-old">Rp 565.000</span>
+              <span class="page-price-main">Rp 395.000</span>
+              <span class="page-badge">-30%</span>
+            </div>
+            <div class="page-num">5</div>
+          </div>
+        `
+      },
+      right: {
+        html: `
+          <div class="page-grey page-inner">
+            <div class="page-label">SPESIFIKASI</div>
+            <div class="page-title">FUTURE 66 III</div>
+            <div class="page-desc">All-round generasi terbaru dengan frame carbon woven baru. Kombinasi power dan control yang seimbang untuk semua level pemain.</div>
+            <table class="page-spec-table">
+              <tr><td>Weight</td><td>4U · 80±3g</td></tr>
+              <tr><td>Balance</td><td>295 ± 3 mm</td></tr>
+              <tr><td>Flex</td><td>Medium (8.5)</td></tr>
+              <tr><td>Max Tension</td><td>32 LBS</td></tr>
+              <tr><td>Frame</td><td>Carbon Woven · HM Graphite</td></tr>
+              <tr><td>Grip Size</td><td>G5</td></tr>
+              <tr><td>Length</td><td>675 mm</td></tr>
+            </table>
+            <a href="product-detail.html?id=future-66-iii" class="btn btn-primary" style="margin-top:auto;text-align:center;display:flex;justify-content:center"><span>LIHAT DETAIL →</span></a>
+            <div class="page-num">6</div>
+          </div>
+        `
+      }
+    },
+
+    // Spread 3: Shoes
+    {
+      left: {
+        html: `
+          <div class="page-green page-inner">
+            <div class="page-label">CHAPTER 02</div>
+            <div class="page-title">SHOES BADMINTON</div>
+            <div class="page-desc" style="color:rgba(255,255,255,.75)">Anti-twist sole, carbon outsole, lightweight upper. Grip maksimal di lapangan vinyl untuk performa optimal.</div>
+            <div style="flex:1;border-radius:8px;overflow:hidden;margin-top:16px">
+              <img src="assets/feed1.jpg" style="width:100%;height:100%;object-fit:cover" alt="Shoes" />
+            </div>
+            <div class="page-num" style="color:rgba(255,255,255,.4)">7</div>
+          </div>
+        `
+      },
+      right: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">SHOES BADMINTON</div>
+            <div class="page-title">KOLEKSI SEPATU</div>
+            <div class="page-product-grid"></div>
+            <div class="page-num">8</div>
+          </div>
+        `,
+        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'shoes').slice(0,4) : []
+      }
+    },
+
+    // Spread 4: Apparel
+    {
+      left: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">CHAPTER 03</div>
+            <div class="page-title">APPAREL</div>
+            <div class="page-desc">Jersey set premium dengan material quick-dry, breathable, dan stretchable. Tampil stylish & performa optimal di lapangan.</div>
+            <div class="page-product-grid"></div>
+            <div class="page-num">9</div>
+          </div>
+        `,
+        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'apparel').slice(0,4) : []
+      },
+      right: {
+        html: `
+          <div class="page-dark page-inner">
+            <div class="page-label">FEATURED SET</div>
+            <div class="page-title">HYBRID RN-8000 SET</div>
+            <div class="page-feature-img">
+              <img src="assets/feed2.jpg" alt="Hybrid RN-8000" />
+            </div>
+            <div class="page-desc">Set lengkap T-Shirt + Grip Handuk + Skirt. Stretchable, breathable, quick-dry. Cooler material untuk performa optimal.</div>
+            <div class="page-price-badge">
+              <span class="page-price-main" style="color:var(--green-neon)">Rp 279.000</span>
+              <span class="page-badge" style="background:var(--green)">SET</span>
+            </div>
+            <div class="page-num">10</div>
+          </div>
+        `
+      }
+    },
+
+    // Spread 5: String & Grip
+    {
+      left: {
+        html: `
+          <div class="page-grey page-inner">
+            <div class="page-label">CHAPTER 04</div>
+            <div class="page-title">STRING &amp; GRIP</div>
+            <div class="page-desc">Senar dan grip premium untuk performa terbaik. Berbagai pilihan warna dan ukuran untuk setiap gaya bermain.</div>
+            <div class="page-product-grid"></div>
+            <div class="page-num">11</div>
+          </div>
+        `,
+        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'grip' || p.category === 'string').slice(0,4) : []
+      },
+      right: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">BEST SELLER</div>
+            <div class="page-title">GRIP JP 100 OG</div>
+            <div class="page-feature-img">
+              <img src="assets/unggulan6.jpg" alt="Grip JP 100 OG" />
+            </div>
+            <table class="page-spec-table">
+              <tr><td>Type</td><td>Overgrip</td></tr>
+              <tr><td>Material</td><td>PU + Anti-Slip</td></tr>
+              <tr><td>Length</td><td>1050 mm</td></tr>
+            </table>
+            <div class="page-price-badge">
+              <span class="page-price-main">Rp 13.000</span>
+              <span class="page-badge" style="background:var(--green)">BEST SELLER</span>
+            </div>
+            <div class="page-num">12</div>
+          </div>
+        `
+      }
+    },
+
+    // Spread 6: Bag
+    {
+      left: {
+        html: `
+          <div class="page-dark page-inner">
+            <div class="page-label">CHAPTER 05</div>
+            <div class="page-title">BAG COLLECTION</div>
+            <div class="page-desc" style="color:rgba(255,255,255,.6)">Thermal bag dan tour bag premium untuk membawa raket dengan aman dan gaya. Kapasitas hingga 12 raket.</div>
+            <div style="flex:1;border-radius:8px;overflow:hidden;margin-top:16px">
+              <img src="assets/banner.jpg" style="width:100%;height:100%;object-fit:cover" alt="Bag Collection" />
+            </div>
+            <div class="page-num" style="color:rgba(255,255,255,.3)">13</div>
+          </div>
+        `
+      },
+      right: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">BAG</div>
+            <div class="page-title">KOLEKSI TAS</div>
+            <div class="page-product-grid"></div>
+            <div class="page-num">14</div>
+          </div>
+        `,
+        products: window.JP_PRODUCTS ? window.JP_PRODUCTS.filter(p => p.category === 'bag').slice(0,4) : []
+      }
+    },
+
+    // Spread 7: Contact + back cover
+    {
+      left: {
+        html: `
+          <div class="page-white page-inner">
+            <div class="page-label">CHAPTER 06</div>
+            <div class="page-title">HUBUNGI KAMI</div>
+            <div class="page-desc">Temukan produk JP-POWER di toko partner resmi kami atau belanja online 24 jam.</div>
+            <div style="display:flex;flex-direction:column;gap:12px;flex:1;margin-top:8px">
+              <div style="padding:14px;background:var(--grey-50);border-radius:10px;border:1px solid var(--grey-100)">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;margin-bottom:4px">ONLINE STORE</div>
+                <div style="font-size:13px;color:var(--grey-500)">jppowerofficial.pages.dev</div>
+                <div style="font-size:13px;color:var(--grey-500)">Shopee · Tokopedia · Lazada</div>
+              </div>
+              <div style="padding:14px;background:var(--grey-50);border-radius:10px;border:1px solid var(--grey-100)">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;margin-bottom:4px">WHATSAPP</div>
+                <div style="font-size:13px;color:var(--grey-500)">+62 812-3456-7890</div>
+                <div style="font-size:13px;color:var(--grey-500)">official@jp-power.com</div>
+              </div>
+              <div style="padding:14px;background:var(--green);border-radius:10px;color:#fff">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;margin-bottom:4px">PARTNER STORE</div>
+                <div style="font-size:13px;opacity:.85">Jakarta · Bandung · Surabaya</div>
+                <div style="font-size:13px;opacity:.85">Yogyakarta · Medan · Bali</div>
+              </div>
+            </div>
+            <div class="page-num">15</div>
+          </div>
+        `
+      },
+      right: {
+        html: `
+          <div class="page-cover" style="background:var(--green)">
+            <div style="font-family:'Barlow Condensed',sans-serif;letter-spacing:.3em;font-size:12px;color:rgba(255,255,255,.6);margin-bottom:20px">JAPAN TECHNOLOGY ★★★★★</div>
+            <img class="cover-logo" src="assets/logo.png" alt="JP-POWER" style="width:120px" />
+            <div style="margin-top:20px;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.14em;font-size:16px;color:rgba(255,255,255,.9)">OFFICIAL PRODUCT CATALOG</div>
+            <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.6)">2026 Edition</div>
+            <a href="product.html" class="btn btn-white" style="margin-top:28px"><span>BELANJA SEKARANG →</span></a>
+          </div>
+        `
+      }
+    }
+  ];
+
+  // ---- Render engine ----
+  let currentSpread = 0;
+  const spreadEl = document.getElementById('flipSpread');
+  const prevBtn = document.getElementById('flipPrev');
+  const nextBtn = document.getElementById('flipNext');
+  const indicator = document.getElementById('flipIndicator');
+
+  function renderPage(pageData) {
+    const div = document.createElement('div');
+    div.className = 'flip-page';
+    div.innerHTML = pageData.html;
+    // inject products if any
+    if (pageData.products && pageData.products.length) {
+      const grid = div.querySelector('.page-product-grid');
+      if (grid) {
+        grid.innerHTML = pageData.products.map(p => `
+          <a href="product-detail.html?id=${p.id}" class="page-product-item">
+            <img src="${p.image}" alt="${p.name}" />
+            <div class="page-product-info">
+              <h5>${p.name}</h5>
+              <div class="price">${fmt(p.price)}</div>
+            </div>
+          </a>
+        `).join('');
+      }
+    }
+    return div;
+  }
+
+  function goToSpread(idx) {
+    idx = Math.max(0, Math.min(pages.length - 1, idx));
+    spreadEl.classList.add('flipping');
+    setTimeout(() => {
+      spreadEl.innerHTML = '';
+      const leftPage = renderPage(pages[idx].left);
+      leftPage.classList.add('flip-page-left');
+      const rightPage = renderPage(pages[idx].right);
+      spreadEl.appendChild(leftPage);
+      spreadEl.appendChild(rightPage);
+      currentSpread = idx;
+      indicator.textContent = `${idx + 1} / ${pages.length}`;
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = idx === pages.length - 1;
+      spreadEl.classList.remove('flipping');
+    }, 350);
+  }
+
+  window.gotoChapter = (idx) => goToSpread(idx);
+
+  prevBtn.addEventListener('click', () => goToSpread(currentSpread - 1));
+  nextBtn.addEventListener('click', () => goToSpread(currentSpread + 1));
+
+  // Chapter tabs
+  const chapterMap = { all: 0, raket: 1, shoes: 3, apparel: 4, aksesoris: 5 };
+  document.querySelectorAll('.hero-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const ch = tab.dataset.chapter;
+      goToSpread(chapterMap[ch] || 0);
+    });
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goToSpread(currentSpread + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goToSpread(currentSpread - 1);
+  });
+
+  // Initial render
+  setTimeout(() => goToSpread(0), 100);
+})();
+</script>
+</body>
+</html>

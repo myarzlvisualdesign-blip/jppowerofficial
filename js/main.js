@@ -26,6 +26,12 @@
       heroTimer = setInterval(() => goTo(heroIndex + 1), 5500);
     };
     resetTimer();
+
+    // Prev / Next arrow buttons
+    const prevBtn = document.getElementById('heroPrev');
+    const nextBtn = document.getElementById('heroNext');
+    prevBtn && prevBtn.addEventListener('click', () => { goTo(heroIndex - 1); resetTimer(); });
+    nextBtn && nextBtn.addEventListener('click', () => { goTo(heroIndex + 1); resetTimer(); });
   }
 
   // ===== SIDEBAR AUTO-SWAP =====
@@ -246,6 +252,22 @@
       setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2200);
     });
   }
+  // ===== BROWSE CATEGORY TRACK =====
+  const browseTrack = document.getElementById('browseTrack');
+  const browsePrevBtn = document.getElementById('browsePrev');
+  const browseNextBtn = document.getElementById('browseNext');
+  if (browseTrack && browsePrevBtn && browseNextBtn) {
+    const scrollBy = () => browseTrack.querySelector('.browse-card')?.offsetWidth + 16 || 200;
+    browsePrevBtn.addEventListener('click', () => browseTrack.scrollBy({ left: -scrollBy() * 2, behavior: 'smooth' }));
+    browseNextBtn.addEventListener('click', () => browseTrack.scrollBy({ left: scrollBy() * 2, behavior: 'smooth' }));
+    const updateArrows = () => {
+      browsePrevBtn.style.opacity = browseTrack.scrollLeft <= 10 ? '0.35' : '1';
+      browseNextBtn.style.opacity = browseTrack.scrollLeft + browseTrack.offsetWidth >= browseTrack.scrollWidth - 10 ? '0.35' : '1';
+    };
+    browseTrack.addEventListener('scroll', updateArrows, { passive: true });
+    updateArrows();
+  }
+
   // ===== NEWSLETTER =====
   document.querySelectorAll('.news-form').forEach(f => {
     f.addEventListener('submit', (e) => {
