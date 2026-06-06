@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=10" />
+<link rel="stylesheet" href="css/style.css?v=11" />
 <style>
 * { box-sizing: border-box; }
 body { background: #15171a; margin: 0; }
@@ -124,17 +124,17 @@ body { background: #15171a; margin: 0; }
   </div>
 
   <div class="thumbs" id="thumbs"></div>
-  <div class="hint">Gunakan tombol ← → keyboard, klik thumbnail, atau swipe di HP</div>
+  <div class="hint">Tombol ← → / klik thumbnail / swipe di HP &nbsp;·&nbsp; di HP: cubit (pinch) atau ketuk-dua-kali untuk zoom</div>
 </div>
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=10"></script>
-<script src="js/cart.js?v=10"></script>
-<script src="js/ui.js?v=10"></script>
-<script src="js/partials.js?v=10"></script>
-<script src="js/render.js?v=10"></script>
-<script src="js/main.js?v=10"></script>
+<script src="js/data.js?v=11"></script>
+<script src="js/cart.js?v=11"></script>
+<script src="js/ui.js?v=11"></script>
+<script src="js/partials.js?v=11"></script>
+<script src="js/render.js?v=11"></script>
+<script src="js/main.js?v=11"></script>
 <script>
 (() => {
   const TOTAL = 54;
@@ -307,13 +307,70 @@ body { background: #15171a; margin: 0; }
     if (e.key === 'ArrowLeft') turn('prev');
   });
 
-  // Swipe support
-  let sx = 0;
-  book.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
-  book.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - sx;
-    if (Math.abs(dx) > 50) turn(dx < 0 ? 'next' : 'prev');
+  // ---- Mobile: swipe to turn + pinch / double-tap zoom + pan (like a book) ----
+  const zoomImg = imgR; // the visible page on mobile
+  let scale = 1, tx = 0, ty = 0;
+  let startDist = 0, startScale = 1;
+  let panSX = 0, panSY = 0, baseTX = 0, baseTY = 0;
+  let swSX = 0, lastTap = 0, moved = false;
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  const applyZoom = () => {
+    zoomImg.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+    zoomImg.style.transition = 'transform .12s ease-out';
+  };
+  const resetZoom = () => { scale = 1; tx = 0; ty = 0; zoomImg.style.transform = ''; };
+
+  book.addEventListener('touchstart', e => {
+    moved = false;
+    if (e.touches.length === 2) {
+      startDist = dist(e.touches);
+      startScale = scale;
+    } else if (e.touches.length === 1) {
+      swSX = e.touches[0].clientX;
+      // double-tap to toggle zoom
+      const now = Date.now();
+      if (now - lastTap < 300) {
+        scale = scale > 1 ? 1 : 2.6;
+        tx = 0; ty = 0;
+        applyZoom();
+        moved = true;
+      }
+      lastTap = now;
+      if (scale > 1) {
+        panSX = e.touches[0].clientX; panSY = e.touches[0].clientY;
+        baseTX = tx; baseTY = ty;
+      }
+    }
   }, { passive: true });
+
+  book.addEventListener('touchmove', e => {
+    moved = true;
+    if (e.touches.length === 2) {
+      const d = dist(e.touches);
+      scale = clamp(startScale * (d / startDist), 1, 4);
+      if (scale === 1) { tx = 0; ty = 0; }
+      applyZoom();
+    } else if (e.touches.length === 1 && scale > 1) {
+      const maxX = (scale - 1) * zoomImg.clientWidth / 2;
+      const maxY = (scale - 1) * zoomImg.clientHeight / 2;
+      tx = clamp(baseTX + (e.touches[0].clientX - panSX), -maxX, maxX);
+      ty = clamp(baseTY + (e.touches[0].clientY - panSY), -maxY, maxY);
+      applyZoom();
+    }
+  }, { passive: true });
+
+  book.addEventListener('touchend', e => {
+    if (scale > 1) return;            // zoomed in → don't turn page
+    if (e.touches.length > 0) return; // still multi-touch
+    const dx = e.changedTouches[0].clientX - swSX;
+    if (Math.abs(dx) > 50 && moved) turn(dx < 0 ? 'next' : 'prev');
+  }, { passive: true });
+
+  // reset zoom whenever the page changes
+  const _render2 = render;
+  render = function () { resetZoom(); _render2(); };
 
   // Init
   render();
