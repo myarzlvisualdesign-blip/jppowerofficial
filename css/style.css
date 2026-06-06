@@ -766,7 +766,7 @@ button { font-family: inherit; cursor: pointer; }
 .browse-card:hover { transform: translateY(-6px); }
 .browse-img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   background: var(--grey-50);
   border-radius: 10px;
   overflow: hidden;
@@ -783,9 +783,10 @@ button { font-family: inherit; cursor: pointer; }
 .browse-card span {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  letter-spacing: .14em;
-  font-size: 13px;
+  letter-spacing: .12em;
+  font-size: 18px;
   color: var(--ink);
+  text-transform: uppercase;
 }
 .browse-arrow {
   flex-shrink: 0;
