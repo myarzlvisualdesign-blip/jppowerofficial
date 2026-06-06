@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=14" />
+<link rel="stylesheet" href="css/style.css?v=15" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -72,71 +72,80 @@ body { background: #ececef; margin: 0; }
 .half img { width:100%; height:100%; object-fit:cover; display:block; }
 .book-spine { position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%); background:rgba(0,0,0,.18); z-index:6; }
 
-/* ---- Turning leaf (paper-like curl) ---- */
+/* ---- Turning leaf — REAL bending paper with 5 strips ---- */
 .leaf {
   position:absolute; top:0; width:50%; height:100%; z-index:30;
   transform-style:preserve-3d;
-  transition:transform .62s cubic-bezier(.42,0,.35,1), filter .35s ease;
-  display:none; will-change:transform;
-  /* lifted shadow grows during flip (added via .lifted) */
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
+  display:none; pointer-events:none;
+  --pg-front: none;
+  --pg-back: none;
 }
-.leaf.show-right { display:block; right:0; transform-origin:left center; }
-.leaf.show-left  { display:block; left:0;  transform-origin:right center; }
-.leaf.lifted { filter: drop-shadow(0 14px 26px rgba(0,0,0,.28)) drop-shadow(0 4px 10px rgba(0,0,0,.16)); }
+.leaf.show-right { display:block; right:0; }
+.leaf.show-left  { display:block; left:0; }
 
-.leaf-face {
-  position:absolute; inset:0; backface-visibility:hidden; overflow:hidden; background:#fff;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.04);
+.strip {
+  position:absolute;
+  top:0; height:100%;
+  width:20%;
+  transform-style:preserve-3d;
+  will-change:transform;
+  /* drop-shadow added during flip via .leaf.flipping */
 }
-.leaf-face img { width:100%; height:100%; object-fit:cover; display:block; }
-.leaf-back { transform:rotateY(180deg); }
+.strip[data-i="0"] { left:0%;  }
+.strip[data-i="1"] { left:20%; }
+.strip[data-i="2"] { left:40%; }
+.strip[data-i="3"] { left:60%; }
+.strip[data-i="4"] { left:80%; }
 
-/* Front shade — simulates paper curving + spine shadow + light catching */
-.leaf-shade {
-  position:absolute; inset:0; pointer-events:none;
-  opacity:0; transition:opacity .3s;
-  background:
-    linear-gradient(to right,
-      rgba(0,0,0,0.32) 0%,
-      rgba(0,0,0,0.14) 7%,
-      rgba(0,0,0,0.00) 22%,
-      rgba(255,255,255,0.10) 48%,
-      rgba(0,0,0,0.00) 72%,
-      rgba(0,0,0,0.10) 90%,
-      rgba(0,0,0,0.22) 100%);
-}
-.leaf.show-left .leaf-shade {
-  background:
-    linear-gradient(to left,
-      rgba(0,0,0,0.32) 0%,
-      rgba(0,0,0,0.14) 7%,
-      rgba(0,0,0,0.00) 22%,
-      rgba(255,255,255,0.10) 48%,
-      rgba(0,0,0,0.00) 72%,
-      rgba(0,0,0,0.10) 90%,
-      rgba(0,0,0,0.22) 100%);
-}
+/* All strips share the SPINE as hinge (for next: left=spine; for prev: right=spine) */
+.leaf.show-right .strip[data-i="0"] { transform-origin:   0% center; }
+.leaf.show-right .strip[data-i="1"] { transform-origin:-100% center; }
+.leaf.show-right .strip[data-i="2"] { transform-origin:-200% center; }
+.leaf.show-right .strip[data-i="3"] { transform-origin:-300% center; }
+.leaf.show-right .strip[data-i="4"] { transform-origin:-400% center; }
 
-/* Back-face curl gradient — visible after rotating past 90deg */
-.leaf-back::after {
-  content:''; position:absolute; inset:0; pointer-events:none; z-index:3;
-  background:
-    linear-gradient(to right,
-      rgba(0,0,0,0.20) 0%,
-      rgba(0,0,0,0.05) 12%,
-      rgba(255,255,255,0.08) 50%,
-      rgba(0,0,0,0.05) 88%,
-      rgba(0,0,0,0.18) 100%);
+.leaf.show-left .strip[data-i="0"] { transform-origin: 500% center; }
+.leaf.show-left .strip[data-i="1"] { transform-origin: 400% center; }
+.leaf.show-left .strip[data-i="2"] { transform-origin: 300% center; }
+.leaf.show-left .strip[data-i="3"] { transform-origin: 200% center; }
+.leaf.show-left .strip[data-i="4"] { transform-origin: 100% center; }
+
+/* Each strip face shows its slice of the page */
+.sface {
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  background-size:500% 100%;
+  background-repeat:no-repeat;
+  background-color:#fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.03);
 }
-.leaf.show-left .leaf-back::after {
-  background:
-    linear-gradient(to left,
-      rgba(0,0,0,0.20) 0%,
-      rgba(0,0,0,0.05) 12%,
-      rgba(255,255,255,0.08) 50%,
-      rgba(0,0,0,0.05) 88%,
-      rgba(0,0,0,0.18) 100%);
+.sf { background-image: var(--pg-front); }
+.sb { background-image: var(--pg-back); transform: rotateY(180deg); }
+.strip[data-i="0"] .sface { background-position-x:   0%; }
+.strip[data-i="1"] .sface { background-position-x:  25%; }
+.strip[data-i="2"] .sface { background-position-x:  50%; }
+.strip[data-i="3"] .sface { background-position-x:  75%; }
+.strip[data-i="4"] .sface { background-position-x: 100%; }
+
+/* Highlight + shadow overlay per strip — creates paper curl appearance */
+.sshade {
+  position:absolute; inset:0;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .25s;
+  /* gradient simulates light catching the curve */
+  background: linear-gradient(to right,
+    rgba(0,0,0,0.18) 0%,
+    rgba(0,0,0,0.04) 28%,
+    rgba(255,255,255,0.06) 55%,
+    rgba(0,0,0,0.06) 82%,
+    rgba(0,0,0,0.16) 100%);
+}
+.leaf.flipping .sshade { opacity: 1; }
+
+/* Drop shadow that "lifts" each strip during flip */
+.leaf.flipping .strip {
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.22));
 }
 
 /* ---- Big side arrows ---- */
@@ -247,8 +256,11 @@ body { background: #ececef; margin: 0; }
         <div class="half right"><img id="imgR" alt="Halaman kanan" /></div>
         <div class="book-spine"></div>
         <div class="leaf" id="leaf">
-          <div class="leaf-face leaf-front"><img id="leafFront" alt="" /><div class="leaf-shade" id="leafShade"></div></div>
-          <div class="leaf-face leaf-back"><img id="leafBack" alt="" /></div>
+          <div class="strip" data-i="0"><div class="sface sf"></div><div class="sface sb"></div><div class="sshade"></div></div>
+          <div class="strip" data-i="1"><div class="sface sf"></div><div class="sface sb"></div><div class="sshade"></div></div>
+          <div class="strip" data-i="2"><div class="sface sf"></div><div class="sface sb"></div><div class="sshade"></div></div>
+          <div class="strip" data-i="3"><div class="sface sf"></div><div class="sface sb"></div><div class="sshade"></div></div>
+          <div class="strip" data-i="4"><div class="sface sf"></div><div class="sface sb"></div><div class="sshade"></div></div>
         </div>
       </div>
     </div>
@@ -298,12 +310,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=14"></script>
-<script src="js/cart.js?v=14"></script>
-<script src="js/ui.js?v=14"></script>
-<script src="js/partials.js?v=14"></script>
-<script src="js/render.js?v=14"></script>
-<script src="js/main.js?v=14"></script>
+<script src="js/data.js?v=15"></script>
+<script src="js/cart.js?v=15"></script>
+<script src="js/ui.js?v=15"></script>
+<script src="js/partials.js?v=15"></script>
+<script src="js/render.js?v=15"></script>
+<script src="js/main.js?v=15"></script>
 <script>
 (() => {
   const TOTAL = 54;
@@ -321,9 +333,40 @@ body { background: #ececef; margin: 0; }
 
   const $ = id => document.getElementById(id);
   const book=$('book'), stage=$('stage'), imgL=$('imgL'), imgR=$('imgR');
-  const leaf=$('leaf'), leafFront=$('leafFront'), leafBack=$('leafBack'), leafShade=$('leafShade');
+  const leaf=$('leaf');
+  const stripsArr = leaf.querySelectorAll('.strip');
   const vbNum=$('vbNum'), thumbsEl=$('thumbs'), tabsEl=$('catTabs');
   const sidePrev=$('sidePrev'), sideNext=$('sideNext');
+
+  // ---- Paper bend helpers ----
+  // Each strip uses a different easing — at any moment during flip, strips are at different
+  // angles, creating the visible "paper curl" effect, like a real page bending.
+  // STRONG spread: strip 0 slow start, strip 4 fast start → noticeable curl mid-flip.
+  const easings = [
+    t => Math.pow(t, 2.4),                 // strip 0 (spine side)
+    t => Math.pow(t, 1.5),
+    t => t,                                // strip 2 (middle): linear
+    t => 1 - Math.pow(1-t, 1.5),
+    t => 1 - Math.pow(1-t, 2.4)            // strip 4 (loose edge)
+  ];
+  function setLeafPages(frontUrl, backUrl){
+    leaf.style.setProperty('--pg-front', frontUrl ? `url("${frontUrl}")` : 'none');
+    leaf.style.setProperty('--pg-back',  backUrl  ? `url("${backUrl}")`  : 'none');
+  }
+  function setStripsAngle(dir, t){
+    const sign = dir === 'next' ? -1 : 1;
+    stripsArr.forEach((s, i) => {
+      const eased = easings[i](t);
+      s.style.transform = `rotateY(${sign * 180 * eased}deg)`;
+    });
+  }
+  function resetStrips(){
+    leaf.className = 'leaf';
+    stripsArr.forEach(s => { s.style.transform = ''; });
+    // clear CSS vars so old page images don't linger
+    leaf.style.removeProperty('--pg-front');
+    leaf.style.removeProperty('--pg-back');
+  }
 
   const isMobile = () => window.matchMedia('(max-width:760px)').matches;
 
@@ -363,43 +406,67 @@ body { background: #ececef; margin: 0; }
     resetZoom();
   }
 
-  // ---- 3D page flip (works on mobile single-page AND desktop spreads) ----
+  // ---- 3D page flip with REAL paper-bend (5 strips, per-strip easing) ----
   function flip(dir, target){
     if(busy) return; busy=true;
-    const mobile=isMobile();
-    const k=Math.floor(cur/2), nk=Math.floor(target/2);
+    const mobile = isMobile();
+    const k = Math.floor(cur/2), nk = Math.floor(target/2);
 
-    if(dir==='next'){
-      leaf.className='leaf show-right lifted'; leaf.style.transition='none'; leaf.style.transform='rotateY(0deg)';
-      if(mobile){
-        leafFront.src=pages[cur]; leafBack.src=pages[target];
-        imgR.src=pages[target]; imgR.parentElement.style.visibility='visible';
-      } else {
-        const r=2*k+1, tl=2*nk, tr=2*nk+1;
-        leafFront.src = r<TOTAL?pages[r]:''; leafBack.src=pages[tl];
-        imgR.src = tr<TOTAL?pages[tr]:''; imgR.parentElement.style.visibility = tr<TOTAL?'visible':'hidden';
+    // 1. Figure out which pages map to leaf-front, leaf-back, and what stays underneath.
+    let frontUrl = null, backUrl = null;
+    if(dir === 'next'){
+      if(mobile){ frontUrl = pages[cur]; backUrl = pages[target]; }
+      else {
+        const r = 2*k+1, tl = 2*nk;
+        frontUrl = r < TOTAL ? pages[r] : null;
+        backUrl  = pages[tl];
       }
-      void leaf.offsetWidth; leaf.style.transition='';
-      requestAnimationFrame(()=>{ leaf.style.transform='rotateY(-180deg)'; leafShade.style.opacity='1'; });
     } else {
-      leaf.className='leaf show-left lifted'; leaf.style.transition='none'; leaf.style.transform='rotateY(0deg)';
-      if(mobile){
-        leafFront.src=pages[cur]; leafBack.src=pages[target];
-        imgR.src=pages[target]; imgR.parentElement.style.visibility='visible';
-      } else {
-        const l=2*k, tl=2*nk, tr=2*nk+1;
-        leafFront.src=pages[l]; leafBack.src = tr<TOTAL?pages[tr]:'';
-        imgL.src=pages[tl]; imgL.parentElement.style.visibility='visible';
+      if(mobile){ frontUrl = pages[cur]; backUrl = pages[target]; }
+      else {
+        const l = 2*k, tl = 2*nk;
+        frontUrl = pages[l];
+        backUrl  = pages[tl];
       }
-      void leaf.offsetWidth; leaf.style.transition='';
-      requestAnimationFrame(()=>{ leaf.style.transform='rotateY(180deg)'; leafShade.style.opacity='1'; });
     }
 
-    setTimeout(()=>{
-      cur=target; render();
-      leaf.style.transition='none'; leaf.style.transform=''; leaf.className='leaf'; leafShade.style.opacity='0';
-      void leaf.offsetWidth; leaf.style.transition=''; busy=false;
-    }, 620);
+    // 2. Set CSS vars + initial strip angle BEFORE making the leaf visible (no flicker).
+    setLeafPages(frontUrl, backUrl);
+    setStripsAngle(dir, 0);
+
+    // 3. Update the underlying half images (will be revealed behind the leaf as it flips).
+    if(dir === 'next'){
+      if(mobile){ imgR.src = pages[target]; imgR.parentElement.style.visibility = 'visible'; }
+      else {
+        const tr = 2*nk+1;
+        imgR.src = tr < TOTAL ? pages[tr] : '';
+        imgR.parentElement.style.visibility = tr < TOTAL ? 'visible' : 'hidden';
+      }
+    } else {
+      if(mobile){ imgR.src = pages[target]; imgR.parentElement.style.visibility = 'visible'; }
+      else {
+        const tl = 2*nk;
+        imgL.src = pages[tl]; imgL.parentElement.style.visibility = 'visible';
+      }
+    }
+
+    // 4. NOW show the leaf — strips already have correct bg + transform.
+    leaf.className = 'leaf ' + (dir === 'next' ? 'show-right' : 'show-left') + ' flipping';
+
+    // 5. RAF-driven animation: per-strip easing → paper curl mid-flip.
+    const duration = 950;
+    const startTime = performance.now();
+    function tick(now){
+      const t = Math.min(1, (now - startTime) / duration);
+      setStripsAngle(dir, t);
+      if(t < 1){ requestAnimationFrame(tick); }
+      else {
+        cur = target; render();
+        resetStrips();
+        busy = false;
+      }
+    }
+    requestAnimationFrame(tick);
   }
 
   function step(dir){
@@ -454,16 +521,15 @@ body { background: #ececef; margin: 0; }
   $('vbThumbs').onclick=()=>thumbsEl.classList.toggle('open');
   document.addEventListener('keydown', e=>{ if(e.key==='ArrowRight')step('next'); if(e.key==='ArrowLeft')step('prev'); });
 
-  // ---- Drag-to-flip (desktop mouse) with grab/grabbing cursor ----
+  // ---- Drag-to-flip (desktop mouse) with grab/grabbing cursor + paper bend ----
   let mdx0 = 0, mdragging = false, mDir = null, peekTarget = null;
   function dragStart(e){
-    if(e.pointerType === 'touch') return; // mobile uses touch swipe
+    if(e.pointerType === 'touch') return;
     if(busy || zoomed) return;
     if(e.button !== 0) return;
-    // ignore clicks inside arrows/toolbar
     if(e.target.closest('.side-arrow, .viewer-bar, .thumbs, .vb-btn')) return;
     mdx0 = e.clientX; mdragging = true; mDir = null; peekTarget = null;
-    book.classList.add('dragging','no-anim');
+    book.classList.add('dragging');
     book.setPointerCapture && book.setPointerCapture(e.pointerId);
   }
   function dragMove(e){
@@ -472,70 +538,62 @@ body { background: #ececef; margin: 0; }
     const dir = dx < 0 ? 'next' : 'prev';
     if(Math.abs(dx) < 6) return;
 
-    // Determine target the first time direction is clear
     if(mDir !== dir){
       mDir = dir;
       const mobile = isMobile();
       const k = Math.floor(cur/2);
-      const atEnd  = mobile ? cur>=TOTAL-1 : k>=maxSpread;
-      const atStart= cur<=0;
+      const atEnd   = mobile ? cur>=TOTAL-1 : k>=maxSpread;
+      const atStart = cur<=0;
       if((dir==='next' && atEnd) || (dir==='prev' && atStart)){ peekTarget=null; return; }
-      // Prepare leaf for the direction (with lifted class for paper drop-shadow)
+      let frontUrl=null, backUrl=null;
       if(dir==='next'){
-        leaf.className='leaf show-right lifted'; leaf.style.transform='rotateY(0deg)';
-        if(mobile){
-          leafFront.src = pages[cur]; leafBack.src = pages[cur+1];
-          peekTarget = cur+1;
-        } else {
-          const r=2*k+1, tl=2*(k+1);
-          leafFront.src = r<TOTAL?pages[r]:''; leafBack.src = pages[tl];
-          peekTarget = (k+1)*2;
-        }
+        if(mobile){ frontUrl=pages[cur]; backUrl=pages[cur+1]; peekTarget=cur+1; }
+        else{ const r=2*k+1, tl=2*(k+1); frontUrl=r<TOTAL?pages[r]:null; backUrl=pages[tl]; peekTarget=(k+1)*2; }
       } else {
-        leaf.className='leaf show-left lifted'; leaf.style.transform='rotateY(0deg)';
-        if(mobile){
-          leafFront.src = pages[cur]; leafBack.src = pages[cur-1];
-          peekTarget = cur-1;
-        } else {
-          const l=2*k, tr=2*(k-1)+1;
-          leafFront.src = pages[l]; leafBack.src = tr<TOTAL?pages[tr]:'';
-          peekTarget = (k-1)*2;
-        }
+        if(mobile){ frontUrl=pages[cur]; backUrl=pages[cur-1]; peekTarget=cur-1; }
+        else{ const l=2*k, tl=2*(k-1); frontUrl=pages[l]; backUrl=pages[tl]; peekTarget=(k-1)*2; }
       }
+      // Set bg + initial angle BEFORE making leaf visible to prevent flicker
+      setLeafPages(frontUrl, backUrl);
+      setStripsAngle(dir, 0);
+      leaf.className = 'leaf ' + (dir==='next' ? 'show-right' : 'show-left') + ' flipping';
     }
     if(peekTarget==null) return;
-    // Map drag distance to rotation (full flip at ~ 220px)
     const bookW = book.clientWidth || 800;
-    const ratio = Math.max(-1, Math.min(1, dx / (bookW * 0.45)));
-    const deg = mDir==='next' ? -180*Math.abs(ratio) : 180*Math.abs(ratio);
-    leaf.style.transform = `rotateY(${deg}deg)`;
-    leafShade.style.opacity = String(Math.min(1, Math.abs(ratio)*1.4));
+    const ratio = Math.max(0, Math.min(1, Math.abs(dx) / (bookW * 0.45)));
+    setStripsAngle(mDir, ratio);
   }
   function dragEnd(e){
     if(!mdragging) return;
     mdragging = false;
-    book.classList.remove('dragging','no-anim');
+    book.classList.remove('dragging');
     book.releasePointerCapture && book.releasePointerCapture(e.pointerId);
-    if(peekTarget==null || mDir==null){ resetLeafSoft(); return; }
+    if(peekTarget==null || mDir==null){ resetStrips(); return; }
     const dx = e.clientX - mdx0;
     const threshold = (book.clientWidth || 800) * 0.18;
+    const startT = Math.max(0, Math.min(1, Math.abs(dx) / ((book.clientWidth || 800) * 0.45)));
     if(Math.abs(dx) >= threshold){
-      // Commit: finish the flip from current angle
+      // Continue flipping from current angle to t=1, then commit
       busy = true;
-      const finalDeg = mDir==='next' ? -180 : 180;
-      leaf.style.transition='';
-      requestAnimationFrame(()=>{ leaf.style.transform=`rotateY(${finalDeg}deg)`; leafShade.style.opacity='1'; });
-      setTimeout(()=>{ cur = peekTarget; render(); resetLeafSoft(); busy=false; }, 380);
+      animatePart(mDir, startT, 1, 380, () => {
+        cur = peekTarget; render(); resetStrips(); busy = false;
+      });
     } else {
-      // Snap back
-      leaf.style.transition='';
-      requestAnimationFrame(()=>{ leaf.style.transform='rotateY(0deg)'; leafShade.style.opacity='0'; });
-      setTimeout(resetLeafSoft, 340);
+      // Snap back to t=0
+      animatePart(mDir, startT, 0, 320, () => resetStrips());
     }
   }
-  function resetLeafSoft(){
-    leaf.style.transition='none'; leaf.style.transform=''; leaf.className='leaf'; leafShade.style.opacity='0';
-    void leaf.offsetWidth; leaf.style.transition='';
+  function animatePart(dir, from, to, duration, done){
+    const start = performance.now();
+    const ease = t => to>from ? 1-Math.pow(1-t,2) : Math.pow(t,2);
+    function tick(now){
+      const p = Math.min(1, (now - start) / duration);
+      const t = from + (to - from) * ease(p);
+      setStripsAngle(dir, t);
+      if(p < 1) requestAnimationFrame(tick);
+      else done && done();
+    }
+    requestAnimationFrame(tick);
   }
   book.addEventListener('pointerdown', dragStart);
   window.addEventListener('pointermove', dragMove);
