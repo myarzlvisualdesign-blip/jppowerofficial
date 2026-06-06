@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=15" />
+<link rel="stylesheet" href="css/style.css?v=16" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -206,11 +206,11 @@ body { background: #ececef; margin: 0; }
 
 /* ---- Mobile: single page + pinch zoom ---- */
 @media (max-width:760px) {
-  .viewer { padding:14px 46px 10px; min-height:0; }
-  .book-stage { max-width: min(95vw, calc((100vh - 200px) * 0.707)); }
+  .viewer { padding:10px 46px 8px; min-height:0; }
+  .book-stage { max-width: min(92vw, calc((100vh - 250px) * 0.707)); }
   .book {
     aspect-ratio: 827 / 1170;
-    max-height: calc(100vh - 200px);  /* fit between header + toolbar */
+    max-height: calc(100vh - 250px);  /* fit header + toolbar + hint + safe area */
   }
   .half.left { display:none; }
   .half.right { border-radius:6px; box-shadow:none; }
@@ -310,12 +310,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=15"></script>
-<script src="js/cart.js?v=15"></script>
-<script src="js/ui.js?v=15"></script>
-<script src="js/partials.js?v=15"></script>
-<script src="js/render.js?v=15"></script>
-<script src="js/main.js?v=15"></script>
+<script src="js/data.js?v=16"></script>
+<script src="js/cart.js?v=16"></script>
+<script src="js/ui.js?v=16"></script>
+<script src="js/partials.js?v=16"></script>
+<script src="js/render.js?v=16"></script>
+<script src="js/main.js?v=16"></script>
 <script>
 (() => {
   const TOTAL = 54;
