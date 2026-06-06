@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=13" />
+<link rel="stylesheet" href="css/style.css?v=14" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -36,43 +36,108 @@ body { background: #ececef; margin: 0; }
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:34px 70px 18px;
-  min-height:62vh;
+  padding:24px 70px 16px;
+  /* fit comfortably in viewport: 100vh - (header ~120) - (toolbar ~64) - paddings */
+  min-height: min(72vh, 720px);
 }
 .book-stage {
   perspective:2600px;
   width:100%;
-  max-width:min(1060px, 116vh);
-  overflow:hidden;
+  /* cap by both width AND height so book never overflows viewport */
+  max-width: min(1060px, calc((100vh - 230px) * 1.413));
+  overflow:visible;          /* let the 3D flip render fully without clipping */
+  display:flex;
+  justify-content:center;
 }
-.book-stage.zoomed { overflow:auto; cursor:grab; max-height:80vh; }
+.book-stage.zoomed { overflow:auto; cursor:grab; max-height:80vh; width:100%; }
 .book-stage.zoomed::-webkit-scrollbar { width:8px; height:8px; }
 .book-stage.zoomed::-webkit-scrollbar-thumb { background:rgba(0,0,0,.25); border-radius:4px; }
 .book {
   position:relative; display:flex; width:100%; aspect-ratio: 1654 / 1170;
+  max-height: calc(100vh - 230px);   /* never taller than viewport - chrome */
   border-radius:2px 6px 6px 2px;
   box-shadow:0 18px 50px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.05);
   transform-style:preserve-3d; background:#fff;
-  transition:width .32s ease;
+  transition: width .32s ease;
+  cursor: grab;              /* invite drag-to-flip */
+  user-select: none;
+  touch-action: pan-y pinch-zoom;
 }
+.book.dragging { cursor: grabbing; }
+.book.no-anim { transition: none; }
+.book.no-anim .leaf { transition: none !important; }
 .half { flex:1; position:relative; overflow:hidden; background:#fff; }
 .half.left  { border-radius:2px 0 0 2px; box-shadow: inset -12px 0 24px -14px rgba(0,0,0,.22); }
 .half.right { border-radius:0 6px 6px 0; box-shadow: inset 12px 0 24px -14px rgba(0,0,0,.22); }
 .half img { width:100%; height:100%; object-fit:cover; display:block; }
 .book-spine { position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%); background:rgba(0,0,0,.18); z-index:6; }
 
-/* ---- Turning leaf ---- */
+/* ---- Turning leaf (paper-like curl) ---- */
 .leaf {
   position:absolute; top:0; width:50%; height:100%; z-index:30;
-  transform-style:preserve-3d; transition:transform .62s cubic-bezier(.42,0,.35,1);
+  transform-style:preserve-3d;
+  transition:transform .62s cubic-bezier(.42,0,.35,1), filter .35s ease;
   display:none; will-change:transform;
+  /* lifted shadow grows during flip (added via .lifted) */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
 }
 .leaf.show-right { display:block; right:0; transform-origin:left center; }
 .leaf.show-left  { display:block; left:0;  transform-origin:right center; }
-.leaf-face { position:absolute; inset:0; backface-visibility:hidden; overflow:hidden; background:#fff; }
+.leaf.lifted { filter: drop-shadow(0 14px 26px rgba(0,0,0,.28)) drop-shadow(0 4px 10px rgba(0,0,0,.16)); }
+
+.leaf-face {
+  position:absolute; inset:0; backface-visibility:hidden; overflow:hidden; background:#fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.04);
+}
 .leaf-face img { width:100%; height:100%; object-fit:cover; display:block; }
 .leaf-back { transform:rotateY(180deg); }
-.leaf-shade { position:absolute; inset:0; background:linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,.18)); opacity:0; transition:opacity .3s; pointer-events:none; }
+
+/* Front shade — simulates paper curving + spine shadow + light catching */
+.leaf-shade {
+  position:absolute; inset:0; pointer-events:none;
+  opacity:0; transition:opacity .3s;
+  background:
+    linear-gradient(to right,
+      rgba(0,0,0,0.32) 0%,
+      rgba(0,0,0,0.14) 7%,
+      rgba(0,0,0,0.00) 22%,
+      rgba(255,255,255,0.10) 48%,
+      rgba(0,0,0,0.00) 72%,
+      rgba(0,0,0,0.10) 90%,
+      rgba(0,0,0,0.22) 100%);
+}
+.leaf.show-left .leaf-shade {
+  background:
+    linear-gradient(to left,
+      rgba(0,0,0,0.32) 0%,
+      rgba(0,0,0,0.14) 7%,
+      rgba(0,0,0,0.00) 22%,
+      rgba(255,255,255,0.10) 48%,
+      rgba(0,0,0,0.00) 72%,
+      rgba(0,0,0,0.10) 90%,
+      rgba(0,0,0,0.22) 100%);
+}
+
+/* Back-face curl gradient — visible after rotating past 90deg */
+.leaf-back::after {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:3;
+  background:
+    linear-gradient(to right,
+      rgba(0,0,0,0.20) 0%,
+      rgba(0,0,0,0.05) 12%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(0,0,0,0.05) 88%,
+      rgba(0,0,0,0.18) 100%);
+}
+.leaf.show-left .leaf-back::after {
+  background:
+    linear-gradient(to left,
+      rgba(0,0,0,0.20) 0%,
+      rgba(0,0,0,0.05) 12%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(0,0,0,0.05) 88%,
+      rgba(0,0,0,0.18) 100%);
+}
 
 /* ---- Big side arrows ---- */
 .side-arrow {
@@ -132,16 +197,30 @@ body { background: #ececef; margin: 0; }
 
 /* ---- Mobile: single page + pinch zoom ---- */
 @media (max-width:760px) {
-  .viewer { padding:20px 50px 12px; min-height:0; }
-  .book { aspect-ratio: 827 / 1170; }
+  .viewer { padding:14px 46px 10px; min-height:0; }
+  .book-stage { max-width: min(95vw, calc((100vh - 200px) * 0.707)); }
+  .book {
+    aspect-ratio: 827 / 1170;
+    max-height: calc(100vh - 200px);  /* fit between header + toolbar */
+  }
   .half.left { display:none; }
   .half.right { border-radius:6px; box-shadow:none; }
   .book-spine { display:none; }
   .leaf { width:100%; }
-  .side-arrow { width:40px; height:54px; font-size:26px; }
-  .side-prev{ left:6px; } .side-next{ right:6px; }
+  .side-arrow { width:36px; height:48px; font-size:24px; opacity:.9; }
+  .side-prev{ left:4px; } .side-next{ right:4px; }
   .vb-zoom-only-desktop { display:none; }
   .vb-num { min-width:70px; font-size:13px; }
+  .viewer-bar { padding:6px 10px; }
+  .vb-btn { width:34px; height:34px; }
+  .cat-hero { padding:18px 0 12px; }
+  .cat-hero h1 { font-size:22px; }
+  .cat-hero p { display:none; }
+}
+@media (max-width:420px) {
+  .viewer { padding:10px 36px 8px; }
+  .side-arrow { width:30px; height:42px; font-size:20px; }
+  .side-prev{ left:2px; } .side-next{ right:2px; }
 }
 .hint { text-align:center; color:#999; font-family:'Barlow Condensed',sans-serif; letter-spacing:.08em; font-size:11px; padding:10px; }
 </style>
@@ -219,12 +298,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=13"></script>
-<script src="js/cart.js?v=13"></script>
-<script src="js/ui.js?v=13"></script>
-<script src="js/partials.js?v=13"></script>
-<script src="js/render.js?v=13"></script>
-<script src="js/main.js?v=13"></script>
+<script src="js/data.js?v=14"></script>
+<script src="js/cart.js?v=14"></script>
+<script src="js/ui.js?v=14"></script>
+<script src="js/partials.js?v=14"></script>
+<script src="js/render.js?v=14"></script>
+<script src="js/main.js?v=14"></script>
 <script>
 (() => {
   const TOTAL = 54;
@@ -291,7 +370,7 @@ body { background: #ececef; margin: 0; }
     const k=Math.floor(cur/2), nk=Math.floor(target/2);
 
     if(dir==='next'){
-      leaf.className='leaf show-right'; leaf.style.transition='none'; leaf.style.transform='rotateY(0deg)';
+      leaf.className='leaf show-right lifted'; leaf.style.transition='none'; leaf.style.transform='rotateY(0deg)';
       if(mobile){
         leafFront.src=pages[cur]; leafBack.src=pages[target];
         imgR.src=pages[target]; imgR.parentElement.style.visibility='visible';
@@ -303,7 +382,7 @@ body { background: #ececef; margin: 0; }
       void leaf.offsetWidth; leaf.style.transition='';
       requestAnimationFrame(()=>{ leaf.style.transform='rotateY(-180deg)'; leafShade.style.opacity='1'; });
     } else {
-      leaf.className='leaf show-left'; leaf.style.transition='none'; leaf.style.transform='rotateY(0deg)';
+      leaf.className='leaf show-left lifted'; leaf.style.transition='none'; leaf.style.transform='rotateY(0deg)';
       if(mobile){
         leafFront.src=pages[cur]; leafBack.src=pages[target];
         imgR.src=pages[target]; imgR.parentElement.style.visibility='visible';
@@ -374,6 +453,94 @@ body { background: #ececef; margin: 0; }
   $('vbFirst').onclick=()=>goTo(0); $('vbLast').onclick=()=>goTo(TOTAL-1);
   $('vbThumbs').onclick=()=>thumbsEl.classList.toggle('open');
   document.addEventListener('keydown', e=>{ if(e.key==='ArrowRight')step('next'); if(e.key==='ArrowLeft')step('prev'); });
+
+  // ---- Drag-to-flip (desktop mouse) with grab/grabbing cursor ----
+  let mdx0 = 0, mdragging = false, mDir = null, peekTarget = null;
+  function dragStart(e){
+    if(e.pointerType === 'touch') return; // mobile uses touch swipe
+    if(busy || zoomed) return;
+    if(e.button !== 0) return;
+    // ignore clicks inside arrows/toolbar
+    if(e.target.closest('.side-arrow, .viewer-bar, .thumbs, .vb-btn')) return;
+    mdx0 = e.clientX; mdragging = true; mDir = null; peekTarget = null;
+    book.classList.add('dragging','no-anim');
+    book.setPointerCapture && book.setPointerCapture(e.pointerId);
+  }
+  function dragMove(e){
+    if(!mdragging) return;
+    const dx = e.clientX - mdx0;
+    const dir = dx < 0 ? 'next' : 'prev';
+    if(Math.abs(dx) < 6) return;
+
+    // Determine target the first time direction is clear
+    if(mDir !== dir){
+      mDir = dir;
+      const mobile = isMobile();
+      const k = Math.floor(cur/2);
+      const atEnd  = mobile ? cur>=TOTAL-1 : k>=maxSpread;
+      const atStart= cur<=0;
+      if((dir==='next' && atEnd) || (dir==='prev' && atStart)){ peekTarget=null; return; }
+      // Prepare leaf for the direction (with lifted class for paper drop-shadow)
+      if(dir==='next'){
+        leaf.className='leaf show-right lifted'; leaf.style.transform='rotateY(0deg)';
+        if(mobile){
+          leafFront.src = pages[cur]; leafBack.src = pages[cur+1];
+          peekTarget = cur+1;
+        } else {
+          const r=2*k+1, tl=2*(k+1);
+          leafFront.src = r<TOTAL?pages[r]:''; leafBack.src = pages[tl];
+          peekTarget = (k+1)*2;
+        }
+      } else {
+        leaf.className='leaf show-left lifted'; leaf.style.transform='rotateY(0deg)';
+        if(mobile){
+          leafFront.src = pages[cur]; leafBack.src = pages[cur-1];
+          peekTarget = cur-1;
+        } else {
+          const l=2*k, tr=2*(k-1)+1;
+          leafFront.src = pages[l]; leafBack.src = tr<TOTAL?pages[tr]:'';
+          peekTarget = (k-1)*2;
+        }
+      }
+    }
+    if(peekTarget==null) return;
+    // Map drag distance to rotation (full flip at ~ 220px)
+    const bookW = book.clientWidth || 800;
+    const ratio = Math.max(-1, Math.min(1, dx / (bookW * 0.45)));
+    const deg = mDir==='next' ? -180*Math.abs(ratio) : 180*Math.abs(ratio);
+    leaf.style.transform = `rotateY(${deg}deg)`;
+    leafShade.style.opacity = String(Math.min(1, Math.abs(ratio)*1.4));
+  }
+  function dragEnd(e){
+    if(!mdragging) return;
+    mdragging = false;
+    book.classList.remove('dragging','no-anim');
+    book.releasePointerCapture && book.releasePointerCapture(e.pointerId);
+    if(peekTarget==null || mDir==null){ resetLeafSoft(); return; }
+    const dx = e.clientX - mdx0;
+    const threshold = (book.clientWidth || 800) * 0.18;
+    if(Math.abs(dx) >= threshold){
+      // Commit: finish the flip from current angle
+      busy = true;
+      const finalDeg = mDir==='next' ? -180 : 180;
+      leaf.style.transition='';
+      requestAnimationFrame(()=>{ leaf.style.transform=`rotateY(${finalDeg}deg)`; leafShade.style.opacity='1'; });
+      setTimeout(()=>{ cur = peekTarget; render(); resetLeafSoft(); busy=false; }, 380);
+    } else {
+      // Snap back
+      leaf.style.transition='';
+      requestAnimationFrame(()=>{ leaf.style.transform='rotateY(0deg)'; leafShade.style.opacity='0'; });
+      setTimeout(resetLeafSoft, 340);
+    }
+  }
+  function resetLeafSoft(){
+    leaf.style.transition='none'; leaf.style.transform=''; leaf.className='leaf'; leafShade.style.opacity='0';
+    void leaf.offsetWidth; leaf.style.transition='';
+  }
+  book.addEventListener('pointerdown', dragStart);
+  window.addEventListener('pointermove', dragMove);
+  window.addEventListener('pointerup', dragEnd);
+  window.addEventListener('pointercancel', dragEnd);
 
   // ---- Desktop zoom (width-based + drag pan) ----
   let zoomed=false;
