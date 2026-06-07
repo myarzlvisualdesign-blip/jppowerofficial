@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=22" />
+<link rel="stylesheet" href="css/style.css?v=23" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -221,10 +221,65 @@ body { background: #ececef; margin: 0; }
 .thumb:hover { opacity:1; }
 
 /* ---- Fullscreen ---- */
-.viewer-fs:fullscreen { display:flex; flex-direction:column; justify-content:center; }
-.viewer-fs:fullscreen .viewer { flex:1; min-height:0; }
-.viewer-fs:fullscreen .book-stage { max-width:none; height:88%; width:auto; }
-.viewer-fs:fullscreen .book { width:auto; height:100%; }
+.viewer-fs:fullscreen,
+.viewer-fs:-webkit-full-screen {
+  background: #1a1a1a;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.viewer-fs:fullscreen .viewer,
+.viewer-fs:-webkit-full-screen .viewer {
+  flex: 1;
+  min-height: 0;
+  padding: 20px 70px;
+}
+.viewer-fs:fullscreen .book-stage,
+.viewer-fs:-webkit-full-screen .book-stage {
+  /* Book sized by height in fullscreen — fit-to-height with book aspect ratio */
+  max-width: calc((100vh - 110px) * 1.413);
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+.viewer-fs:fullscreen .book,
+.viewer-fs:-webkit-full-screen .book {
+  max-height: calc(100vh - 110px);
+  width: 100%;
+  height: auto;
+}
+.viewer-fs:fullscreen .viewer-bar,
+.viewer-fs:-webkit-full-screen .viewer-bar {
+  flex-shrink: 0;
+  background: #0d0f11;
+  border-top-color: #2a2c30;
+  color: #ddd;
+}
+.viewer-fs:fullscreen .vb-btn,
+.viewer-fs:-webkit-full-screen .vb-btn { color: #ddd; }
+.viewer-fs:fullscreen .vb-btn:hover:not(:disabled),
+.viewer-fs:-webkit-full-screen .vb-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,.08); color: #00B140;
+}
+.viewer-fs:fullscreen .vb-num,
+.viewer-fs:-webkit-full-screen .vb-num { color: #ddd; }
+.viewer-fs:fullscreen .vb-divider,
+.viewer-fs:-webkit-full-screen .vb-divider { background: rgba(255,255,255,.15); }
+.viewer-fs:fullscreen .thumbs,
+.viewer-fs:-webkit-full-screen .thumbs {
+  background: #181a1d;
+  border-top-color: #2a2c30;
+}
+.viewer-fs:fullscreen .side-arrow,
+.viewer-fs:-webkit-full-screen .side-arrow {
+  background: rgba(255,255,255,.12);
+}
+.viewer-fs:fullscreen .side-arrow:hover:not(:disabled),
+.viewer-fs:-webkit-full-screen .side-arrow:hover:not(:disabled) {
+  background: rgba(0,177,64,.85);
+}
 
 /* ---- Mobile: STILL 2-page spread, just smaller ---- */
 @media (max-width:760px) {
@@ -255,6 +310,16 @@ body { background: #ececef; margin: 0; }
   .side-prev{ left:0; } .side-next{ right:0; }
   .vb-btn { width:28px; height:28px; }
   .vb-num { min-width:64px; font-size:11px; }
+}
+
+/* Mobile fullscreen — tighter padding so book uses all available space */
+@media (max-width:760px) {
+  .viewer-fs:fullscreen .viewer,
+  .viewer-fs:-webkit-full-screen .viewer { padding: 8px 30px; }
+  .viewer-fs:fullscreen .book-stage,
+  .viewer-fs:-webkit-full-screen .book-stage { max-width: calc((100vh - 80px) * 1.413); }
+  .viewer-fs:fullscreen .book,
+  .viewer-fs:-webkit-full-screen .book { max-height: calc(100vh - 80px); }
 }
 .hint { text-align:center; color:#999; font-family:'Barlow Condensed',sans-serif; letter-spacing:.08em; font-size:11px; padding:10px; }
 </style>
@@ -332,12 +397,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=22"></script>
-<script src="js/cart.js?v=22"></script>
-<script src="js/ui.js?v=22"></script>
-<script src="js/partials.js?v=22"></script>
-<script src="js/render.js?v=22"></script>
-<script src="js/main.js?v=22"></script>
+<script src="js/data.js?v=23"></script>
+<script src="js/cart.js?v=23"></script>
+<script src="js/ui.js?v=23"></script>
+<script src="js/partials.js?v=23"></script>
+<script src="js/render.js?v=23"></script>
+<script src="js/main.js?v=23"></script>
 <script>
 (() => {
   const TOTAL = 54;
