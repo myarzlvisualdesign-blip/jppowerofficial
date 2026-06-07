@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=19" />
+<link rel="stylesheet" href="css/style.css?v=20" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -84,24 +84,17 @@ body { background: #ececef; margin: 0; }
 .leaf.show-left  { display:block; left:0;  transform-origin:right center; }
 .leaf.flipping { filter: drop-shadow(0 14px 22px rgba(0,0,0,.28)) drop-shadow(0 6px 10px rgba(0,0,0,.14)); }
 
-/* Paper-flip keyframes — translateZ peaks mid-flip so the page LIFTS off the book like real paper.
-   Multi-stop keyframes give weighted easing that feels like paper has mass. */
+/* Pure rotation flip — no translateZ jumps, no glitches. Clean and reliable. */
 @keyframes paper-flip-next {
-  0%   { transform: rotateY(0deg) translateZ(0); }
-  20%  { transform: rotateY(-40deg) translateZ(20px); }
-  50%  { transform: rotateY(-90deg) translateZ(34px); }
-  80%  { transform: rotateY(-140deg) translateZ(20px); }
-  100% { transform: rotateY(-180deg) translateZ(0); }
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(-180deg); }
 }
 @keyframes paper-flip-prev {
-  0%   { transform: rotateY(0deg) translateZ(0); }
-  20%  { transform: rotateY(40deg) translateZ(20px); }
-  50%  { transform: rotateY(90deg) translateZ(34px); }
-  80%  { transform: rotateY(140deg) translateZ(20px); }
-  100% { transform: rotateY(180deg) translateZ(0); }
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(180deg); }
 }
-.leaf.flip-next { animation: paper-flip-next .8s cubic-bezier(.45, .05, .55, .95) forwards; }
-.leaf.flip-prev { animation: paper-flip-prev .8s cubic-bezier(.45, .05, .55, .95) forwards; }
+.leaf.flip-next { animation: paper-flip-next .65s ease-in-out forwards; }
+.leaf.flip-prev { animation: paper-flip-prev .65s ease-in-out forwards; }
 
 .leaf-face {
   position:absolute; inset:0;
@@ -324,12 +317,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=19"></script>
-<script src="js/cart.js?v=19"></script>
-<script src="js/ui.js?v=19"></script>
-<script src="js/partials.js?v=19"></script>
-<script src="js/render.js?v=19"></script>
-<script src="js/main.js?v=19"></script>
+<script src="js/data.js?v=20"></script>
+<script src="js/cart.js?v=20"></script>
+<script src="js/ui.js?v=20"></script>
+<script src="js/partials.js?v=20"></script>
+<script src="js/render.js?v=20"></script>
+<script src="js/main.js?v=20"></script>
 <script>
 (() => {
   const TOTAL = 54;
@@ -357,11 +350,16 @@ body { background: #ececef; margin: 0; }
     leafBack.src  = backUrl  || '';
   }
   function resetLeaf(){
+    // Hide instantly first so no post-animation "snap-back" is visible
+    leaf.style.visibility = 'hidden';
     leaf.className = 'leaf';
     leaf.style.transform = '';
     leaf.style.transition = '';
+    leaf.style.animation = '';
     leafFront.src = '';
     leafBack.src  = '';
+    // Restore visibility next frame (leaf is now display:none anyway)
+    requestAnimationFrame(() => { leaf.style.visibility = ''; });
   }
 
   const isMobile = () => window.matchMedia('(max-width:760px)').matches;
@@ -459,7 +457,7 @@ body { background: #ececef; margin: 0; }
       busy = false;
     };
     leaf.addEventListener('animationend', onDone);
-    setTimeout(onDone, 880);
+    setTimeout(onDone, 720);
   }
 
   function step(dir){
