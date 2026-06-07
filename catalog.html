@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=25" />
+<link rel="stylesheet" href="css/style.css?v=26" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -98,10 +98,10 @@ body { background: #ececef; margin: 0; }
 .thumb.active { border-color:#00B140; opacity:1; }
 .thumb:hover { opacity:1; }
 
-/* ---- Fullscreen ---- */
+/* ---- Fullscreen (light background like normal mode, no black sides) ---- */
 .viewer-fs:fullscreen,
 .viewer-fs:-webkit-full-screen {
-  background: #1a1a1a;
+  background: #ececef;   /* same light grey as normal mode */
   width: 100vw; height: 100vh;
   display: flex; flex-direction: column; overflow: hidden;
 }
@@ -109,39 +109,21 @@ body { background: #ececef; margin: 0; }
 .viewer-fs:-webkit-full-screen .viewer { flex: 1; min-height: 0; padding: 24px 80px; }
 .viewer-fs:fullscreen #book,
 .viewer-fs:-webkit-full-screen #book {
-  /* Don't over-zoom: cap width to leave breathing room, cap height to fit between toolbar+padding */
   width: 100%;
   max-width: min(82vw, calc((100vh - 140px) * 1.5));
   max-height: calc(100vh - 140px);
   margin: 0 auto;
 }
-.viewer-fs:fullscreen .viewer-bar,
-.viewer-fs:-webkit-full-screen .viewer-bar {
-  background: #0d0f11; border-top-color: #2a2c30;
-}
-.viewer-fs:fullscreen .vb-btn,
-.viewer-fs:-webkit-full-screen .vb-btn { color: #ddd; }
-.viewer-fs:fullscreen .vb-btn:hover:not(:disabled),
-.viewer-fs:-webkit-full-screen .vb-btn:hover:not(:disabled) {
-  background: rgba(255,255,255,.08); color: #00B140;
-}
-.viewer-fs:fullscreen .vb-num,
-.viewer-fs:-webkit-full-screen .vb-num { color: #ddd; }
-.viewer-fs:fullscreen .thumbs,
-.viewer-fs:-webkit-full-screen .thumbs { background: #181a1d; border-top-color: #2a2c30; }
-.viewer-fs:fullscreen .side-arrow,
-.viewer-fs:-webkit-full-screen .side-arrow { background: rgba(255,255,255,.12); }
 
-/* ---- Mobile (single-page mode via library auto-detect) ---- */
+/* ---- Mobile (single-page mode, no side arrows — swipe instead) ---- */
 @media (max-width:760px) {
-  .viewer { padding:10px 38px 8px; min-height:0; }
+  .viewer { padding:10px 16px 8px; min-height:0; }
   #book {
-    /* Constrain width so StPageFlip auto-switches to portrait (1-page) mode */
-    max-width: min(85vw, 360px);
+    max-width: min(92vw, 380px);
     max-height: calc(100vh - 200px);
   }
-  .side-arrow { width:32px; height:44px; font-size:22px; opacity:.9; }
-  .side-prev{ left:2px; } .side-next{ right:2px; }
+  /* Hide side arrows on mobile — user swipes the page instead */
+  .side-arrow { display: none; }
   .vb-num { min-width:80px; font-size:12px; }
   .viewer-bar { padding:6px 8px; }
   .vb-btn { width:32px; height:32px; }
@@ -150,12 +132,10 @@ body { background: #ececef; margin: 0; }
   .cat-hero p { display:none; }
 }
 @media (max-width:420px) {
-  .viewer { padding:6px 26px 6px; }
-  .side-arrow { width:26px; height:36px; font-size:18px; }
-  .side-prev{ left:0; } .side-next{ right:0; }
+  .viewer { padding:6px 10px 6px; }
   .vb-btn { width:28px; height:28px; }
   .vb-num { min-width:64px; font-size:11px; }
-  #book { max-width: min(88vw, 320px); }
+  #book { max-width: min(94vw, 340px); }
 }
 
 /* Mobile fullscreen — keep single-page, tighter padding */
@@ -231,12 +211,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=25"></script>
-<script src="js/cart.js?v=25"></script>
-<script src="js/ui.js?v=25"></script>
-<script src="js/partials.js?v=25"></script>
-<script src="js/render.js?v=25"></script>
-<script src="js/main.js?v=25"></script>
+<script src="js/data.js?v=26"></script>
+<script src="js/cart.js?v=26"></script>
+<script src="js/ui.js?v=26"></script>
+<script src="js/partials.js?v=26"></script>
+<script src="js/render.js?v=26"></script>
+<script src="js/main.js?v=26"></script>
 <!-- StPageFlip — same library that powers flbook-style page turn -->
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <script>
