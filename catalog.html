@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=23" />
+<link rel="stylesheet" href="css/style.css?v=24" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -29,7 +29,7 @@ body { background: #ececef; margin: 0; }
 }
 .cat-tab.active, .cat-tab:hover { background:#00B140; color:#fff; border-color:#00B140; }
 
-/* ---- Viewer (light, flbook style) ---- */
+/* ---- StPageFlip book stage ---- */
 .viewer-fs { background:#ececef; }
 .viewer {
   position:relative;
@@ -37,138 +37,16 @@ body { background: #ececef; margin: 0; }
   align-items:center;
   justify-content:center;
   padding:24px 70px 16px;
-  /* fit comfortably in viewport: 100vh - (header ~120) - (toolbar ~64) - paddings */
-  min-height: min(72vh, 720px);
+  min-height: min(74vh, 760px);
 }
-.book-stage {
-  perspective:2600px;
-  width:100%;
-  /* cap by both width AND height so book never overflows viewport */
-  max-width: min(1060px, calc((100vh - 230px) * 1.413));
-  overflow:visible;          /* let the 3D flip render fully without clipping */
-  display:flex;
-  justify-content:center;
+#book {
+  width: 100%;
+  max-width: 1060px;
+  max-height: calc(100vh - 220px);
+  margin: 0 auto;
 }
-.book-stage.zoomed { overflow:auto; cursor:grab; max-height:80vh; width:100%; }
-.book-stage.zoomed::-webkit-scrollbar { width:8px; height:8px; }
-.book-stage.zoomed::-webkit-scrollbar-thumb { background:rgba(0,0,0,.25); border-radius:4px; }
-.book {
-  position:relative; display:flex; width:100%; aspect-ratio: 1654 / 1170;
-  max-height: calc(100vh - 230px);   /* never taller than viewport - chrome */
-  border-radius:2px 6px 6px 2px;
-  box-shadow:0 18px 50px rgba(0,0,0,.28), 0 0 0 1px rgba(0,0,0,.05);
-  transform-style:preserve-3d; background:#fff;
-  transition: width .32s ease;
-  cursor: grab;              /* invite drag-to-flip */
-  user-select: none;
-  touch-action: pan-y pinch-zoom;
-}
-.book.dragging { cursor: grabbing; }
-.book.no-anim { transition: none; }
-.book.no-anim .leaf { transition: none !important; }
-.half { flex:1; position:relative; overflow:hidden; background:#fff; }
-.half.left  { border-radius:2px 0 0 2px; box-shadow: inset -12px 0 24px -14px rgba(0,0,0,.22); }
-.half.right { border-radius:0 6px 6px 0; box-shadow: inset 12px 0 24px -14px rgba(0,0,0,.22); }
-.half img { width:100%; height:100%; object-fit:cover; display:block; }
-.book-spine { position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-50%); background:rgba(0,0,0,.18); z-index:6; }
-
-/* ---- Turning leaf (CSS keyframes for bulletproof reliability + paper-lift) ---- */
-.leaf {
-  position:absolute; top:0; width:50%; height:100%; z-index:30;
-  transform-style:preserve-3d;
-  display:none; pointer-events:none;
-  will-change:transform, filter;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.06));
-}
-.leaf.show-right { display:block; right:0; transform-origin:left center; }
-.leaf.show-left  { display:block; left:0;  transform-origin:right center; }
-.leaf.flipping { filter: drop-shadow(0 14px 22px rgba(0,0,0,.28)) drop-shadow(0 6px 10px rgba(0,0,0,.14)); }
-
-/* Pure rotation flip — no translateZ jumps, no glitches. Clean and reliable. */
-@keyframes paper-flip-next {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(-180deg); }
-}
-@keyframes paper-flip-prev {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(180deg); }
-}
-.leaf.flip-next { animation: paper-flip-next .65s ease-in-out forwards; }
-.leaf.flip-prev { animation: paper-flip-prev .65s ease-in-out forwards; }
-
-.leaf-face {
-  position:absolute; inset:0;
-  background:#fff;
-  box-shadow: 0 0 0 1px rgba(0,0,0,.04);
-  overflow:hidden;
-}
-.leaf-face img {
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  object-fit:cover; display:block;
-}
-/* Two faces stacked. We control visibility via opacity, NOT backface-visibility
-   (which is unreliable across browsers). Opacity swaps at 50% via @keyframes. */
-.leaf-front { z-index: 2; }
-.leaf-back  { z-index: 1; transform: scaleX(-1); /* pre-mirror to compensate for rotation */ }
-
-/* Front fades out + back fades in EXACTLY at 50% of animation — synced with rotation. */
-@keyframes face-front-hide {
-  0%, 49.99% { opacity: 1; }
-  50%, 100%  { opacity: 0; }
-}
-@keyframes face-back-show {
-  0%, 49.99% { opacity: 0; }
-  50%, 100%  { opacity: 1; }
-}
-.leaf.flipping .leaf-front { animation: face-front-hide .65s steps(1, end) forwards; }
-.leaf.flipping .leaf-back  { animation: face-back-show  .65s steps(1, end) forwards; }
-
-/* Paper-curl shading on the FRONT face — simulates light catching the bending paper */
-.leaf-shade {
-  position:absolute; inset:0; pointer-events:none;
-  opacity:0; transition:opacity .25s;
-  background: linear-gradient(to right,
-    rgba(0,0,0,0.30) 0%,
-    rgba(0,0,0,0.10) 8%,
-    rgba(0,0,0,0.00) 24%,
-    rgba(255,255,255,0.10) 50%,
-    rgba(0,0,0,0.00) 76%,
-    rgba(0,0,0,0.10) 92%,
-    rgba(0,0,0,0.22) 100%);
-}
-.leaf.show-left .leaf-shade {
-  background: linear-gradient(to left,
-    rgba(0,0,0,0.30) 0%,
-    rgba(0,0,0,0.10) 8%,
-    rgba(0,0,0,0.00) 24%,
-    rgba(255,255,255,0.10) 50%,
-    rgba(0,0,0,0.00) 76%,
-    rgba(0,0,0,0.10) 92%,
-    rgba(0,0,0,0.22) 100%);
-}
-.leaf.flipping .leaf-shade { opacity:1; }
-
-/* Paper-curl shading on the BACK face — visible after rotating past 90° */
-.leaf-back::after {
-  content:''; position:absolute; inset:0; pointer-events:none; z-index:3;
-  background: linear-gradient(to right,
-    rgba(0,0,0,0.20) 0%,
-    rgba(0,0,0,0.05) 14%,
-    rgba(255,255,255,0.08) 50%,
-    rgba(0,0,0,0.05) 86%,
-    rgba(0,0,0,0.18) 100%);
-  opacity:0; transition:opacity .25s;
-}
-.leaf.show-left .leaf-back::after {
-  background: linear-gradient(to left,
-    rgba(0,0,0,0.20) 0%,
-    rgba(0,0,0,0.05) 14%,
-    rgba(255,255,255,0.08) 50%,
-    rgba(0,0,0,0.05) 86%,
-    rgba(0,0,0,0.18) 100%);
-}
-.leaf.flipping .leaf-back::after { opacity:1; }
+#book .page { background: #fff; box-shadow: 0 0 1px rgba(0,0,0,.1); }
+#book .page img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ---- Big side arrows ---- */
 .side-arrow {
@@ -215,7 +93,7 @@ body { background: #ececef; margin: 0; }
 .thumbs.open { max-height:110px; padding-top:10px; padding-bottom:12px; }
 .thumbs::-webkit-scrollbar { height:7px; }
 .thumbs::-webkit-scrollbar-thumb { background:rgba(0,0,0,.2); border-radius:4px; }
-.thumb { flex-shrink:0; width:54px; height:76px; border-radius:3px; overflow:hidden; cursor:pointer; border:2px solid transparent; opacity:.6; transition:all .18s; background:#ddd; }
+.thumb { flex-shrink:0; width:54px; height:76px; border-radius:3px; overflow:hidden; cursor:pointer; border:2px solid transparent; opacity:.6; transition:all .18s; background:#ddd; padding:0; }
 .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
 .thumb.active { border-color:#00B140; opacity:1; }
 .thumb:hover { opacity:1; }
@@ -224,38 +102,16 @@ body { background: #ececef; margin: 0; }
 .viewer-fs:fullscreen,
 .viewer-fs:-webkit-full-screen {
   background: #1a1a1a;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  width: 100vw; height: 100vh;
+  display: flex; flex-direction: column; overflow: hidden;
 }
 .viewer-fs:fullscreen .viewer,
-.viewer-fs:-webkit-full-screen .viewer {
-  flex: 1;
-  min-height: 0;
-  padding: 20px 70px;
-}
-.viewer-fs:fullscreen .book-stage,
-.viewer-fs:-webkit-full-screen .book-stage {
-  /* Book sized by height in fullscreen — fit-to-height with book aspect ratio */
-  max-width: calc((100vh - 110px) * 1.413);
-  width: 100%;
-  height: auto;
-  max-height: 100%;
-}
-.viewer-fs:fullscreen .book,
-.viewer-fs:-webkit-full-screen .book {
-  max-height: calc(100vh - 110px);
-  width: 100%;
-  height: auto;
-}
+.viewer-fs:-webkit-full-screen .viewer { flex: 1; min-height: 0; padding: 16px 60px; }
+.viewer-fs:fullscreen #book,
+.viewer-fs:-webkit-full-screen #book { max-width: none; max-height: 100%; height: 100%; }
 .viewer-fs:fullscreen .viewer-bar,
 .viewer-fs:-webkit-full-screen .viewer-bar {
-  flex-shrink: 0;
-  background: #0d0f11;
-  border-top-color: #2a2c30;
-  color: #ddd;
+  background: #0d0f11; border-top-color: #2a2c30;
 }
 .viewer-fs:fullscreen .vb-btn,
 .viewer-fs:-webkit-full-screen .vb-btn { color: #ddd; }
@@ -265,38 +121,17 @@ body { background: #ececef; margin: 0; }
 }
 .viewer-fs:fullscreen .vb-num,
 .viewer-fs:-webkit-full-screen .vb-num { color: #ddd; }
-.viewer-fs:fullscreen .vb-divider,
-.viewer-fs:-webkit-full-screen .vb-divider { background: rgba(255,255,255,.15); }
 .viewer-fs:fullscreen .thumbs,
-.viewer-fs:-webkit-full-screen .thumbs {
-  background: #181a1d;
-  border-top-color: #2a2c30;
-}
+.viewer-fs:-webkit-full-screen .thumbs { background: #181a1d; border-top-color: #2a2c30; }
 .viewer-fs:fullscreen .side-arrow,
-.viewer-fs:-webkit-full-screen .side-arrow {
-  background: rgba(255,255,255,.12);
-}
-.viewer-fs:fullscreen .side-arrow:hover:not(:disabled),
-.viewer-fs:-webkit-full-screen .side-arrow:hover:not(:disabled) {
-  background: rgba(0,177,64,.85);
-}
+.viewer-fs:-webkit-full-screen .side-arrow { background: rgba(255,255,255,.12); }
 
-/* ---- Mobile: STILL 2-page spread, just smaller ---- */
+/* ---- Mobile ---- */
 @media (max-width:760px) {
   .viewer { padding:10px 38px 8px; min-height:0; }
-  .book-stage {
-    max-width: min(96vw, calc((100vh - 250px) * 1.413));
-  }
-  .book {
-    /* Same landscape spread ratio as desktop */
-    aspect-ratio: 1654 / 1170;
-    max-height: calc(100vh - 250px);
-  }
-  .half.left  { border-radius:2px 0 0 2px; box-shadow: inset -8px 0 14px -10px rgba(0,0,0,.2); }
-  .half.right { border-radius:0 6px 6px 0; box-shadow: inset 8px 0 14px -10px rgba(0,0,0,.2); }
+  #book { max-height: calc(100vh - 200px); }
   .side-arrow { width:32px; height:44px; font-size:22px; opacity:.9; }
   .side-prev{ left:2px; } .side-next{ right:2px; }
-  .vb-zoom-only-desktop { display:none; }
   .vb-num { min-width:80px; font-size:12px; }
   .viewer-bar { padding:6px 8px; }
   .vb-btn { width:32px; height:32px; }
@@ -312,15 +147,6 @@ body { background: #ececef; margin: 0; }
   .vb-num { min-width:64px; font-size:11px; }
 }
 
-/* Mobile fullscreen — tighter padding so book uses all available space */
-@media (max-width:760px) {
-  .viewer-fs:fullscreen .viewer,
-  .viewer-fs:-webkit-full-screen .viewer { padding: 8px 30px; }
-  .viewer-fs:fullscreen .book-stage,
-  .viewer-fs:-webkit-full-screen .book-stage { max-width: calc((100vh - 80px) * 1.413); }
-  .viewer-fs:fullscreen .book,
-  .viewer-fs:-webkit-full-screen .book { max-height: calc(100vh - 80px); }
-}
 .hint { text-align:center; color:#999; font-family:'Barlow Condensed',sans-serif; letter-spacing:.08em; font-size:11px; padding:10px; }
 </style>
 </head>
@@ -340,17 +166,7 @@ body { background: #ececef; margin: 0; }
 <div class="viewer-fs" id="viewerFs">
   <div class="viewer">
     <button class="side-arrow side-prev" id="sidePrev" aria-label="Sebelumnya">&#8249;</button>
-    <div class="book-stage" id="stage">
-      <div class="book" id="book">
-        <div class="half left"><img id="imgL" alt="Halaman kiri" /></div>
-        <div class="half right"><img id="imgR" alt="Halaman kanan" /></div>
-        <div class="book-spine"></div>
-        <div class="leaf" id="leaf">
-          <div class="leaf-face leaf-front"><img id="leafFront" alt="" /><div class="leaf-shade" id="leafShade"></div></div>
-          <div class="leaf-face leaf-back"><img id="leafBack" alt="" /></div>
-        </div>
-      </div>
-    </div>
+    <div id="book"></div>
     <button class="side-arrow side-next" id="sideNext" aria-label="Berikutnya">&#8250;</button>
   </div>
 
@@ -379,10 +195,6 @@ body { background: #ececef; margin: 0; }
     </div>
 
     <div class="vb-group">
-      <button class="vb-btn vb-zoom-only-desktop" id="vbZoom" title="Perbesar">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-      </button>
-      <div class="vb-divider vb-zoom-only-desktop"></div>
       <button class="vb-btn" id="vbFull" title="Layar penuh">
         <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
       </button>
@@ -393,24 +205,26 @@ body { background: #ececef; margin: 0; }
   <div class="thumbs" id="thumbs"></div>
 </div>
 
-<div class="hint">Desktop: klik panah samping / tombol zoom / layar penuh &nbsp;·&nbsp; HP: swipe ganti halaman, cubit (pinch) atau ketuk-dua-kali untuk zoom</div>
+<div class="hint">Klik tombol panah / drag pojok halaman / swipe di HP &nbsp;·&nbsp; halaman membungkuk seperti kertas asli</div>
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=23"></script>
-<script src="js/cart.js?v=23"></script>
-<script src="js/ui.js?v=23"></script>
-<script src="js/partials.js?v=23"></script>
-<script src="js/render.js?v=23"></script>
-<script src="js/main.js?v=23"></script>
+<script src="js/data.js?v=24"></script>
+<script src="js/cart.js?v=24"></script>
+<script src="js/ui.js?v=24"></script>
+<script src="js/partials.js?v=24"></script>
+<script src="js/render.js?v=24"></script>
+<script src="js/main.js?v=24"></script>
+<!-- StPageFlip — same library that powers flbook-style page turn -->
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <script>
 (() => {
   const TOTAL = 54;
-  const pad = n => String(n).padStart(2, '0');
+  const pad = n => String(n).padStart(2,'0');
   const pages = [];
   for (let i = 1; i <= TOTAL; i++) pages.push(`assets/catalog/page-${pad(i)}.jpg`);
-  const maxSpread = Math.floor((TOTAL - 1) / 2);
 
+  // Category jump points (1-based page numbers)
   const tabs = [
     { label:'SEMUA', page:1 }, { label:'GROMMET', page:1 }, { label:'SENAR', page:12 },
     { label:'GRIP', page:19 }, { label:'TAS', page:23 }, { label:'APPAREL', page:28 },
@@ -419,308 +233,112 @@ body { background: #ececef; margin: 0; }
   ];
 
   const $ = id => document.getElementById(id);
-  const book=$('book'), stage=$('stage'), imgL=$('imgL'), imgR=$('imgR');
-  const leaf=$('leaf'), leafFront=$('leafFront'), leafBack=$('leafBack'), leafShade=$('leafShade');
-  const vbNum=$('vbNum'), thumbsEl=$('thumbs'), tabsEl=$('catTabs');
-  const sidePrev=$('sidePrev'), sideNext=$('sideNext');
+  const bookEl = $('book'), vbNum = $('vbNum');
+  const sidePrev = $('sidePrev'), sideNext = $('sideNext');
+  const tabsEl = $('catTabs'), thumbsEl = $('thumbs');
 
-  // ---- Leaf helpers (CSS-transition driven for reliability) ----
-  function setLeafPages(frontUrl, backUrl){
-    leafFront.src = frontUrl || '';
-    leafBack.src  = backUrl  || '';
-  }
-  function resetLeaf(){
-    // Hide instantly first so no post-animation "snap-back" is visible
-    leaf.style.visibility = 'hidden';
-    leaf.className = 'leaf';
-    leaf.style.transform = '';
-    leaf.style.transition = '';
-    leaf.style.animation = '';
-    leafFront.src = '';
-    leafBack.src  = '';
-    // Restore visibility next frame (leaf is now display:none anyway)
-    requestAnimationFrame(() => { leaf.style.visibility = ''; });
-  }
+  // Initialize StPageFlip — the real paper-bend library
+  const pageFlip = new St.PageFlip(bookEl, {
+    width: 550,
+    height: 733,
+    size: 'stretch',
+    minWidth: 280,
+    maxWidth: 1000,
+    minHeight: 380,
+    maxHeight: 1400,
+    maxShadowOpacity: 0.5,
+    showCover: false,
+    mobileScrollSupport: false,
+    usePortrait: true,           // 1 page in portrait, 2 in landscape (auto-switch)
+    drawShadow: true,
+    flippingTime: 700,
+    startZIndex: 1,
+    autoSize: true,
+    showPageCorners: true,        // show corner peek-to-flip hint
+    disableFlipByClick: false,
+  });
 
-  // Always use 2-page spread mode (mobile included) — user prefers book-like view
-  const isMobile = () => false;
+  // Load all 54 images
+  pageFlip.loadFromImages(pages);
 
-  // cur = 0-based PAGE index. Desktop keeps it even (spread-aligned).
-  let cur = 0, busy = false;
-
-  function preload(p){
-    [p-2,p-1,p+1,p+2].forEach(i=>{ if(i>=0&&i<TOTAL){const im=new Image();im.src=pages[i];} });
-  }
-
-  function render(){
-    const mobile = isMobile();
-    if(mobile){
-      imgR.src = pages[cur];
-      imgR.parentElement.style.visibility='visible';
-      imgL.parentElement.style.visibility='hidden';
-      vbNum.textContent = `${cur+1} / ${TOTAL}`;
+  function updateUI() {
+    const cur = pageFlip.getCurrentPageIndex();   // 0-based
+    const total = pageFlip.getPageCount();
+    const orientation = pageFlip.getOrientation(); // 'landscape' | 'portrait'
+    if (orientation === 'landscape' && cur + 1 < total && cur > 0) {
+      vbNum.textContent = `${cur+1}–${cur+2} / ${total}`;
     } else {
-      const k=Math.floor(cur/2), l=2*k, r=2*k+1;
-      imgL.src = pages[l];
-      imgR.src = r<TOTAL?pages[r]:'';
-      imgL.parentElement.style.visibility='visible';
-      imgR.parentElement.style.visibility = r<TOTAL?'visible':'hidden';
-      vbNum.textContent = r<TOTAL?`${l+1}–${r+1} / ${TOTAL}`:`${l+1} / ${TOTAL}`;
+      vbNum.textContent = `${cur+1} / ${total}`;
     }
-    const atStart = cur<=0;
-    const atEnd = mobile ? cur>=TOTAL-1 : Math.floor(cur/2)>=maxSpread;
-    [sidePrev,$('vbPrev'),$('vbFirst')].forEach(b=>b.disabled=atStart);
-    [sideNext,$('vbNext'),$('vbLast')].forEach(b=>b.disabled=atEnd);
-    const k=Math.floor(cur/2);
-    thumbsEl.querySelectorAll('.thumb').forEach((t,i)=>{
-      const on = mobile ? i===cur : (i===2*k||i===2*k+1);
+    sidePrev.disabled = $('vbPrev').disabled = $('vbFirst').disabled = (cur <= 0);
+    const atEnd = cur >= total - 1;
+    sideNext.disabled = $('vbNext').disabled = $('vbLast').disabled = atEnd;
+    // Update thumbnails
+    thumbsEl.querySelectorAll('.thumb').forEach((t, i) => {
+      const on = orientation === 'landscape'
+        ? (i === cur || i === cur + 1)
+        : (i === cur);
       t.classList.toggle('active', on);
     });
-    const at=thumbsEl.querySelector('.thumb.active'); if(at) at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
-    preload(cur);
-    resetZoom();
+    const at = thumbsEl.querySelector('.thumb.active');
+    if (at) at.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
   }
 
-  // ---- 3D page flip with REAL paper-bend (5 strips, per-strip easing) ----
-  function flip(dir, target){
-    if(busy) return; busy=true;
-    const mobile = isMobile();
-    const k = Math.floor(cur/2), nk = Math.floor(target/2);
+  pageFlip.on('flip', updateUI);
+  pageFlip.on('changeOrientation', updateUI);
+  setTimeout(updateUI, 200);
 
-    // 1. Figure out which pages map to leaf-front, leaf-back, and what stays underneath.
-    let frontUrl = null, backUrl = null;
-    if(dir === 'next'){
-      if(mobile){ frontUrl = pages[cur]; backUrl = pages[target]; }
-      else {
-        const r = 2*k+1, tl = 2*nk;
-        frontUrl = r < TOTAL ? pages[r] : null;
-        backUrl  = pages[tl];
-      }
-    } else {
-      if(mobile){ frontUrl = pages[cur]; backUrl = pages[target]; }
-      else {
-        const l = 2*k, tl = 2*nk;
-        frontUrl = pages[l];
-        backUrl  = pages[tl];
-      }
-    }
-
-    // 2. Set leaf images BEFORE making the leaf visible (no flicker).
-    setLeafPages(frontUrl, backUrl);
-
-    // 3. Update the underlying half images (revealed behind the leaf as it flips).
-    if(dir === 'next'){
-      if(mobile){ imgR.src = pages[target]; imgR.parentElement.style.visibility = 'visible'; }
-      else {
-        const tr = 2*nk+1;
-        imgR.src = tr < TOTAL ? pages[tr] : '';
-        imgR.parentElement.style.visibility = tr < TOTAL ? 'visible' : 'hidden';
-      }
-    } else {
-      if(mobile){ imgR.src = pages[target]; imgR.parentElement.style.visibility = 'visible'; }
-      else {
-        const tl = 2*nk;
-        imgL.src = pages[tl]; imgL.parentElement.style.visibility = 'visible';
-      }
-    }
-
-    // 4. Trigger the CSS @keyframes animation — browser handles the whole flip.
-    leaf.style.transform = '';
-    leaf.className = 'leaf flipping ' + (dir === 'next' ? 'show-right flip-next' : 'show-left flip-prev');
-
-    // 5. Commit on animation end (with safety setTimeout in case event misses).
-    let finished = false;
-    const onDone = () => {
-      if(finished) return; finished = true;
-      leaf.removeEventListener('animationend', onDone);
-      cur = target; render();
-      resetLeaf();
-      busy = false;
-    };
-    leaf.addEventListener('animationend', onDone);
-    setTimeout(onDone, 720);
-  }
-
-  function step(dir){
-    if(busy) return;
-    const mobile=isMobile();
-    let target;
-    if(mobile){
-      target = dir==='next'?cur+1:cur-1;
-      if(target<0||target>=TOTAL) return;
-    } else {
-      const k=Math.floor(cur/2), nk= dir==='next'?k+1:k-1;
-      if(nk<0||nk>maxSpread) return;
-      target = nk*2;
-    }
-    flip(dir, target);
-  }
-
-  function goTo(p){
-    if(busy||p<0||p>=TOTAL) return;
-    const mobile=isMobile();
-    if(mobile){
-      if(p===cur) return;
-      if(Math.abs(p-cur)===1) flip(p>cur?'next':'prev', p);
-      else { cur=p; render(); }
-    } else {
-      const k=Math.floor(cur/2), nk=Math.floor(p/2);
-      if(nk===k) return;
-      if(Math.abs(nk-k)===1) flip(nk>k?'next':'prev', nk*2);
-      else { cur=nk*2; render(); }
-    }
-  }
-
-  // thumbnails (one per page)
-  pages.forEach((p,i)=>{
-    const t=document.createElement('button'); t.className='thumb';
-    const im=document.createElement('img'); im.loading='lazy'; im.src=p; t.appendChild(im);
-    t.addEventListener('click',()=>goTo(i));
+  // Build thumbnails
+  pages.forEach((p, i) => {
+    const t = document.createElement('button');
+    t.className = 'thumb';
+    const im = document.createElement('img');
+    im.loading = 'lazy';
+    im.src = p;
+    t.appendChild(im);
+    t.addEventListener('click', () => pageFlip.flip(i, 'top'));
     thumbsEl.appendChild(t);
   });
 
-  // category tabs
-  tabs.forEach((tb,i)=>{
-    const b=document.createElement('button'); b.className='cat-tab'+(i===0?' active':''); b.textContent=tb.label;
-    b.addEventListener('click',()=>{ tabsEl.querySelectorAll('.cat-tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); goTo(tb.page-1); });
+  // Category tabs
+  tabs.forEach((tb, i) => {
+    const b = document.createElement('button');
+    b.className = 'cat-tab' + (i === 0 ? ' active' : '');
+    b.textContent = tb.label;
+    b.addEventListener('click', () => {
+      tabsEl.querySelectorAll('.cat-tab').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      pageFlip.flip(tb.page - 1, 'top');
+    });
     tabsEl.appendChild(b);
   });
 
-  // controls
-  $('vbPrev').onclick=()=>step('prev'); $('vbNext').onclick=()=>step('next');
-  sidePrev.onclick=()=>step('prev'); sideNext.onclick=()=>step('next');
-  $('vbFirst').onclick=()=>goTo(0); $('vbLast').onclick=()=>goTo(TOTAL-1);
-  $('vbThumbs').onclick=()=>thumbsEl.classList.toggle('open');
-  document.addEventListener('keydown', e=>{ if(e.key==='ArrowRight')step('next'); if(e.key==='ArrowLeft')step('prev'); });
+  // Controls
+  $('vbPrev').onclick = () => pageFlip.flipPrev();
+  $('vbNext').onclick = () => pageFlip.flipNext();
+  sidePrev.onclick = () => pageFlip.flipPrev();
+  sideNext.onclick = () => pageFlip.flipNext();
+  $('vbFirst').onclick = () => pageFlip.flip(0, 'top');
+  $('vbLast').onclick = () => pageFlip.flip(TOTAL - 1, 'top');
+  $('vbThumbs').onclick = () => thumbsEl.classList.toggle('open');
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') pageFlip.flipNext();
+    if (e.key === 'ArrowLeft') pageFlip.flipPrev();
+  });
 
-  // ---- Drag-to-flip (desktop mouse) with grab/grabbing cursor + paper bend ----
-  let mdx0 = 0, mdragging = false, mDir = null, peekTarget = null;
-  function dragStart(e){
-    if(e.pointerType === 'touch') return;
-    if(busy || zoomed) return;
-    if(e.button !== 0) return;
-    if(e.target.closest('.side-arrow, .viewer-bar, .thumbs, .vb-btn')) return;
-    mdx0 = e.clientX; mdragging = true; mDir = null; peekTarget = null;
-    book.classList.add('dragging');
-    book.setPointerCapture && book.setPointerCapture(e.pointerId);
-  }
-  function dragMove(e){
-    if(!mdragging) return;
-    const dx = e.clientX - mdx0;
-    const dir = dx < 0 ? 'next' : 'prev';
-    if(Math.abs(dx) < 6) return;
-
-    if(mDir !== dir){
-      mDir = dir;
-      const mobile = isMobile();
-      const k = Math.floor(cur/2);
-      const atEnd   = mobile ? cur>=TOTAL-1 : k>=maxSpread;
-      const atStart = cur<=0;
-      if((dir==='next' && atEnd) || (dir==='prev' && atStart)){ peekTarget=null; return; }
-      let frontUrl=null, backUrl=null;
-      if(dir==='next'){
-        if(mobile){ frontUrl=pages[cur]; backUrl=pages[cur+1]; peekTarget=cur+1; }
-        else{ const r=2*k+1, tl=2*(k+1); frontUrl=r<TOTAL?pages[r]:null; backUrl=pages[tl]; peekTarget=(k+1)*2; }
-      } else {
-        if(mobile){ frontUrl=pages[cur]; backUrl=pages[cur-1]; peekTarget=cur-1; }
-        else{ const l=2*k, tl=2*(k-1); frontUrl=pages[l]; backUrl=pages[tl]; peekTarget=(k-1)*2; }
-      }
-      // Set images + show leaf at angle 0 (during drag we set transform manually)
-      setLeafPages(frontUrl, backUrl);
-      leaf.className = 'leaf flipping ' + (dir==='next' ? 'show-right' : 'show-left');
-      leaf.style.transition = 'none';
-      leaf.style.transform = 'rotateY(0deg)';
-    }
-    if(peekTarget==null) return;
-    const bookW = book.clientWidth || 800;
-    const ratio = Math.max(0, Math.min(1, Math.abs(dx) / (bookW * 0.45)));
-    const sign = mDir === 'next' ? -1 : 1;
-    leaf.style.transform = `rotateY(${sign * 180 * ratio}deg)`;
-  }
-  function dragEnd(e){
-    if(!mdragging) return;
-    mdragging = false;
-    book.classList.remove('dragging');
-    book.releasePointerCapture && book.releasePointerCapture(e.pointerId);
-    if(peekTarget==null || mDir==null){ resetLeaf(); return; }
-    const dx = e.clientX - mdx0;
-    const threshold = (book.clientWidth || 800) * 0.18;
-    // Enable smooth transition to snap or commit
-    leaf.style.transition = 'transform .4s cubic-bezier(.45, .05, .55, .95)';
-    if(Math.abs(dx) >= threshold){
-      busy = true;
-      const finalDeg = mDir === 'next' ? -180 : 180;
-      requestAnimationFrame(() => { leaf.style.transform = `rotateY(${finalDeg}deg)`; });
-      setTimeout(() => {
-        cur = peekTarget; render(); resetLeaf(); busy = false;
-      }, 420);
-    } else {
-      requestAnimationFrame(() => { leaf.style.transform = 'rotateY(0deg)'; });
-      setTimeout(() => { resetLeaf(); }, 420);
-    }
-  }
-  book.addEventListener('pointerdown', dragStart);
-  window.addEventListener('pointermove', dragMove);
-  window.addEventListener('pointerup', dragEnd);
-  window.addEventListener('pointercancel', dragEnd);
-
-  // ---- Desktop zoom (width-based + drag pan) ----
-  let zoomed=false;
-  function resetZoom(){ zoomed=false; book.style.width='100%'; stage.classList.remove('zoomed'); }
-  $('vbZoom').onclick=()=>{
-    if(isMobile()) return;
-    zoomed=!zoomed; book.style.width=zoomed?'155%':'100%'; stage.classList.toggle('zoomed',zoomed);
-    if(zoomed) stage.scrollLeft=(stage.scrollWidth-stage.clientWidth)/2;
+  // Fullscreen
+  const fsEl = $('viewerFs');
+  $('vbFull').onclick = () => {
+    if (!document.fullscreenElement) {
+      (fsEl.requestFullscreen || fsEl.webkitRequestFullscreen).call(fsEl);
+    } else document.exitFullscreen();
+    // Resize the page-flip after fullscreen transition
+    setTimeout(() => pageFlip.update(), 300);
   };
-  let drag=false,dsx=0,dsy=0,dsl=0,dst=0;
-  stage.addEventListener('pointerdown',e=>{ if(!zoomed)return; drag=true; dsx=e.clientX;dsy=e.clientY;dsl=stage.scrollLeft;dst=stage.scrollTop; stage.style.cursor='grabbing'; });
-  window.addEventListener('pointermove',e=>{ if(!drag)return; stage.scrollLeft=dsl-(e.clientX-dsx); stage.scrollTop=dst-(e.clientY-dsy); });
-  window.addEventListener('pointerup',()=>{ if(!drag)return; drag=false; stage.style.cursor='grab'; });
+  document.addEventListener('fullscreenchange', () => setTimeout(() => pageFlip.update(), 300));
 
-  // ---- Fullscreen ----
-  const fsEl=$('viewerFs');
-  $('vbFull').onclick=()=>{ if(!document.fullscreenElement){ (fsEl.requestFullscreen||fsEl.webkitRequestFullscreen).call(fsEl);} else document.exitFullscreen(); };
-
-  // ---- Mobile pinch / double-tap zoom + swipe-to-flip ----
-  const zimg=imgR;
-  let ms=1,mx=0,my=0,sd=0,ss=1,psx=0,psy=0,bx=0,by=0,swSX=0,swSY=0,lastTap=0,moved=false,pinching=false;
-  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-  const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
-  const applyM=()=>{ zimg.style.transform=`translate(${mx}px,${my}px) scale(${ms})`; zimg.style.transition='transform .08s ease-out'; };
-  const resetM=()=>{ ms=1;mx=0;my=0; zimg.style.transform=''; };
-  book.addEventListener('touchstart',e=>{
-    moved=false;
-    if(e.touches.length===2){ pinching=true; sd=dist(e.touches); ss=ms; }
-    else if(e.touches.length===1){
-      pinching=false; swSX=e.touches[0].clientX; swSY=e.touches[0].clientY;
-      const now=Date.now();
-      if(now-lastTap<300){ ms=ms>1?1:2.6; mx=0;my=0; applyM(); moved=true; }
-      lastTap=now;
-      if(ms>1){ psx=e.touches[0].clientX;psy=e.touches[0].clientY;bx=mx;by=my; }
-    }
-  },{passive:true});
-  book.addEventListener('touchmove',e=>{
-    moved=true;
-    if(e.touches.length===2){ ms=clamp(ss*(dist(e.touches)/sd),1,4); if(ms===1){mx=0;my=0;} applyM(); }
-    else if(e.touches.length===1 && ms>1){
-      const lim=(ms-1), mxX=lim*zimg.clientWidth/2, mxY=lim*zimg.clientHeight/2;
-      mx=clamp(bx+(e.touches[0].clientX-psx),-mxX,mxX); my=clamp(by+(e.touches[0].clientY-psy),-mxY,mxY); applyM();
-    }
-  },{passive:true});
-  book.addEventListener('touchend',e=>{
-    if(pinching){ if(e.touches.length===0)pinching=false; return; }
-    if(ms>1) return; if(e.touches.length>0) return;
-    const dx=e.changedTouches[0].clientX-swSX, dy=e.changedTouches[0].clientY-swSY;
-    if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy) && moved) step(dx<0?'next':'prev');
-  },{passive:true});
-
-  const _r=render; render=function(){ resetM(); _r(); };
-
-  // re-render on breakpoint change
-  let wasMobile=isMobile();
-  window.addEventListener('resize',()=>{ const m=isMobile(); if(m!==wasMobile){ wasMobile=m; resetZoom(); render(); } });
-
-  render();
+  // Resize handling
+  window.addEventListener('resize', () => pageFlip.update());
 })();
 </script>
 </body>
