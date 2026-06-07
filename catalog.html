@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=21" />
+<link rel="stylesheet" href="css/style.css?v=22" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -226,32 +226,35 @@ body { background: #ececef; margin: 0; }
 .viewer-fs:fullscreen .book-stage { max-width:none; height:88%; width:auto; }
 .viewer-fs:fullscreen .book { width:auto; height:100%; }
 
-/* ---- Mobile: single page + pinch zoom ---- */
+/* ---- Mobile: STILL 2-page spread, just smaller ---- */
 @media (max-width:760px) {
-  .viewer { padding:10px 46px 8px; min-height:0; }
-  .book-stage { max-width: min(92vw, calc((100vh - 250px) * 0.707)); }
-  .book {
-    aspect-ratio: 827 / 1170;
-    max-height: calc(100vh - 250px);  /* fit header + toolbar + hint + safe area */
+  .viewer { padding:10px 38px 8px; min-height:0; }
+  .book-stage {
+    max-width: min(96vw, calc((100vh - 250px) * 1.413));
   }
-  .half.left { display:none; }
-  .half.right { border-radius:6px; box-shadow:none; }
-  .book-spine { display:none; }
-  .leaf { width:100%; }
-  .side-arrow { width:36px; height:48px; font-size:24px; opacity:.9; }
-  .side-prev{ left:4px; } .side-next{ right:4px; }
+  .book {
+    /* Same landscape spread ratio as desktop */
+    aspect-ratio: 1654 / 1170;
+    max-height: calc(100vh - 250px);
+  }
+  .half.left  { border-radius:2px 0 0 2px; box-shadow: inset -8px 0 14px -10px rgba(0,0,0,.2); }
+  .half.right { border-radius:0 6px 6px 0; box-shadow: inset 8px 0 14px -10px rgba(0,0,0,.2); }
+  .side-arrow { width:32px; height:44px; font-size:22px; opacity:.9; }
+  .side-prev{ left:2px; } .side-next{ right:2px; }
   .vb-zoom-only-desktop { display:none; }
-  .vb-num { min-width:70px; font-size:13px; }
-  .viewer-bar { padding:6px 10px; }
-  .vb-btn { width:34px; height:34px; }
+  .vb-num { min-width:80px; font-size:12px; }
+  .viewer-bar { padding:6px 8px; }
+  .vb-btn { width:32px; height:32px; }
   .cat-hero { padding:18px 0 12px; }
   .cat-hero h1 { font-size:22px; }
   .cat-hero p { display:none; }
 }
 @media (max-width:420px) {
-  .viewer { padding:10px 36px 8px; }
-  .side-arrow { width:30px; height:42px; font-size:20px; }
-  .side-prev{ left:2px; } .side-next{ right:2px; }
+  .viewer { padding:6px 26px 6px; }
+  .side-arrow { width:26px; height:36px; font-size:18px; }
+  .side-prev{ left:0; } .side-next{ right:0; }
+  .vb-btn { width:28px; height:28px; }
+  .vb-num { min-width:64px; font-size:11px; }
 }
 .hint { text-align:center; color:#999; font-family:'Barlow Condensed',sans-serif; letter-spacing:.08em; font-size:11px; padding:10px; }
 </style>
@@ -329,12 +332,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=21"></script>
-<script src="js/cart.js?v=21"></script>
-<script src="js/ui.js?v=21"></script>
-<script src="js/partials.js?v=21"></script>
-<script src="js/render.js?v=21"></script>
-<script src="js/main.js?v=21"></script>
+<script src="js/data.js?v=22"></script>
+<script src="js/cart.js?v=22"></script>
+<script src="js/ui.js?v=22"></script>
+<script src="js/partials.js?v=22"></script>
+<script src="js/render.js?v=22"></script>
+<script src="js/main.js?v=22"></script>
 <script>
 (() => {
   const TOTAL = 54;
@@ -374,7 +377,8 @@ body { background: #ececef; margin: 0; }
     requestAnimationFrame(() => { leaf.style.visibility = ''; });
   }
 
-  const isMobile = () => window.matchMedia('(max-width:760px)').matches;
+  // Always use 2-page spread mode (mobile included) — user prefers book-like view
+  const isMobile = () => false;
 
   // cur = 0-based PAGE index. Desktop keeps it even (spread-aligned).
   let cur = 0, busy = false;
