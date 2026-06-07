@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=26" />
+<link rel="stylesheet" href="css/style.css?v=27" />
 <style>
 * { box-sizing: border-box; }
 body { background: #ececef; margin: 0; }
@@ -98,22 +98,41 @@ body { background: #ececef; margin: 0; }
 .thumb.active { border-color:#00B140; opacity:1; }
 .thumb:hover { opacity:1; }
 
-/* ---- Fullscreen (light background like normal mode, no black sides) ---- */
+/* ---- Fullscreen (BLACK background, book stretches edge-to-edge) ---- */
 .viewer-fs:fullscreen,
 .viewer-fs:-webkit-full-screen {
-  background: #ececef;   /* same light grey as normal mode */
+  background: #000;          /* solid black */
   width: 100vw; height: 100vh;
   display: flex; flex-direction: column; overflow: hidden;
 }
 .viewer-fs:fullscreen .viewer,
-.viewer-fs:-webkit-full-screen .viewer { flex: 1; min-height: 0; padding: 24px 80px; }
+.viewer-fs:-webkit-full-screen .viewer {
+  flex: 1; min-height: 0;
+  padding: 8px 0;          /* minimal horizontal padding — book goes edge-to-edge */
+}
 .viewer-fs:fullscreen #book,
 .viewer-fs:-webkit-full-screen #book {
   width: 100%;
-  max-width: min(82vw, calc((100vh - 140px) * 1.5));
-  max-height: calc(100vh - 140px);
+  max-width: 100vw;
+  max-height: calc(100vh - 80px);
   margin: 0 auto;
 }
+.viewer-fs:fullscreen .viewer-bar,
+.viewer-fs:-webkit-full-screen .viewer-bar {
+  background: #000;
+  border-top-color: #222;
+  color: #ddd;
+}
+.viewer-fs:fullscreen .vb-btn,
+.viewer-fs:-webkit-full-screen .vb-btn { color: #ddd; }
+.viewer-fs:fullscreen .vb-btn:hover:not(:disabled),
+.viewer-fs:-webkit-full-screen .vb-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,.08); color: #00B140;
+}
+.viewer-fs:fullscreen .vb-num,
+.viewer-fs:-webkit-full-screen .vb-num { color: #ddd; }
+.viewer-fs:fullscreen .thumbs,
+.viewer-fs:-webkit-full-screen .thumbs { background: #0a0a0a; border-top-color: #222; }
 
 /* ---- Mobile (single-page mode, no side arrows — swipe instead) ---- */
 @media (max-width:760px) {
@@ -138,14 +157,14 @@ body { background: #ececef; margin: 0; }
   #book { max-width: min(94vw, 340px); }
 }
 
-/* Mobile fullscreen — keep single-page, tighter padding */
+/* Mobile fullscreen — edge-to-edge, single-page, BLACK bg */
 @media (max-width:760px) {
   .viewer-fs:fullscreen .viewer,
-  .viewer-fs:-webkit-full-screen .viewer { padding: 14px 24px; }
+  .viewer-fs:-webkit-full-screen .viewer { padding: 6px 0; }
   .viewer-fs:fullscreen #book,
   .viewer-fs:-webkit-full-screen #book {
-    max-width: min(80vw, calc((100vh - 120px) * 0.707));
-    max-height: calc(100vh - 120px);
+    max-width: 100vw;       /* full width edge-to-edge */
+    max-height: calc(100vh - 60px);
   }
 }
 
@@ -211,12 +230,12 @@ body { background: #ececef; margin: 0; }
 
 <div id="siteFooter"></div>
 
-<script src="js/data.js?v=26"></script>
-<script src="js/cart.js?v=26"></script>
-<script src="js/ui.js?v=26"></script>
-<script src="js/partials.js?v=26"></script>
-<script src="js/render.js?v=26"></script>
-<script src="js/main.js?v=26"></script>
+<script src="js/data.js?v=27"></script>
+<script src="js/cart.js?v=27"></script>
+<script src="js/ui.js?v=27"></script>
+<script src="js/partials.js?v=27"></script>
+<script src="js/render.js?v=27"></script>
+<script src="js/main.js?v=27"></script>
 <!-- StPageFlip — same library that powers flbook-style page turn -->
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 <script>
